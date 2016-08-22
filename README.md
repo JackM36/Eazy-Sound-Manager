@@ -4,11 +4,27 @@
 
 Moreover, Eazy Sound Manager has the option to make music persist through multiple scenes, as well as add fade in/out transitions. Different global settings for music, game sound effects and UI sound effects are also implemented. However, eash audio has its own volume setting which is always relative to its global volume.
 
+## Features
+- No setup needed
+- Simple API
+- Play multiple audio clips
+- Play music, game sound effects and UI sound effects
+- Play/Stop/Pause/Resume all or individual audio clips
+- Loop music
+- Fade in and fade out transitions
+- Global volume settings
+- Music persistance across scenes
+
 ## Installation
+No setup is needed. Just place the SoundManager.cs script somewhere inside your assets folder, and you are ready to go.
+
+**DO NOT ATTACH THE SCRIPT ON ANY GAMEOBJECT**
 
 ## Usage
 
 ## Authors
+- Jack Hadjicosti (https://github.com/JackM36)
+- Andreas Andreou (https://github.com/AndAndreou)
 
 ## License
 MIT License. Copyright 2016 Jack Hadjicosti.
