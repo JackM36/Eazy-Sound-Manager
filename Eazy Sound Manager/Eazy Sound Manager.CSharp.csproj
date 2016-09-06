@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Eazy Tools\Sound Manager\Demo\EazySoundManagerDemo.cs" />
     <Compile Include="Assets\Eazy Tools\Sound Manager\Scripts\SoundManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

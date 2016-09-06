@@ -37,22 +37,62 @@ namespace EazyTools.SoundManager
         /// <summary>
         /// Global volume
         /// </summary>
-        public static float globalVolume { get; set; }
+        public static float globalVolume
+        {
+            get
+            {
+                return vol;
+            }
+            set
+            {
+                vol = value;
+            }
+        }
 
         /// <summary>
         /// Global music volume
         /// </summary>
-        public static float globalMusicVolume { get; set; }
+        public static float globalMusicVolume
+        {
+            get
+            {
+                return musicVol;
+            }
+            set
+            {
+                musicVol = value;
+            }
+        }
 
         /// <summary>
         /// Global sounds volume
         /// </summary>
-        public static float globalSoundsVolume { get; set; }
+        public static float globalSoundsVolume
+        {
+            get
+            {
+                return soundsVol;
+            }
+            set
+            {
+                soundsVol = value;
+            }
+        }
 
         /// <summary>
         /// Global UI sounds volume
         /// </summary>
-        public static float globalUISoundsVolume { get; set; }
+        public static float globalUISoundsVolume
+        {
+            get
+            {
+                return UISoundsVol;
+            }
+            set
+            {
+                UISoundsVol = value;
+            }
+        }
 
         void Awake()
         {
@@ -106,7 +146,7 @@ namespace EazyTools.SoundManager
                 audio.Update();
 
                 // Remove all music clips that are not playing
-                if (!audio.loop && !audio.playing)
+                if (!audio.playing && !audio.paused)
                 {
                     Destroy(audio.audioSource);
                     musicAudio.Remove(key);
@@ -121,7 +161,7 @@ namespace EazyTools.SoundManager
                 audio.Update();
 
                 // Remove all sound fx clips that are not playing
-                if (!audio.loop && !audio.playing)
+                if (!audio.playing && !audio.paused)
                 {
                     Destroy(audio.audioSource);
                     soundsAudio.Remove(key);
@@ -136,7 +176,7 @@ namespace EazyTools.SoundManager
                 audio.Update();
 
                 // Remove all UI sound fx clips that are not playing
-                if (!audio.loop && !audio.playing)
+                if (!audio.playing && !audio.paused)
                 {
                     Destroy(audio.audioSource);
                     UISoundsAudio.Remove(key);
@@ -596,6 +636,8 @@ namespace EazyTools.SoundManager
     public class Audio
     {
         private static int audioCounter = 0;
+        private float volume;
+        private float targetVolume;
 
         /// <summary>
         /// The ID of the Audio
@@ -646,16 +688,6 @@ namespace EazyTools.SoundManager
         /// The interpolater for fading in/out
         /// </summary>
         public float fadeInterpolater { get; private set; }
-
-        /// <summary>
-        /// Volume of the audio. It is always relative to the global volume.
-        /// </summary>
-        public float volume { get; set; }
-
-        /// <summary>
-        /// The volume to reach
-        /// </summary>
-        public float targetVolume { get; private set; }
 
         /// <summary>
         /// The volume the audio has when fade in/out starts
@@ -741,6 +773,15 @@ namespace EazyTools.SoundManager
             paused = false;
         }
 
+        /// <summary>
+        /// Sets the audio volume
+        /// </summary>
+        /// <param name="volume">The target volume</param>
+        public void SetVolume(float volume)
+        {
+            targetVolume = Mathf.Clamp01(volume);
+        }
+
         public void Update()
         {
             activated = true;
@@ -785,6 +826,8 @@ namespace EazyTools.SoundManager
             {
                 audioSource.Stop();
                 stopping = false;
+                playing = false;
+                paused = false;
             }
 
             // Update playing status
