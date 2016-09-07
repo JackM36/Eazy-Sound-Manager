@@ -652,17 +652,17 @@ namespace EazyTools.SoundManager
         /// <summary>
         /// Whether the audio will be lopped
         /// </summary>
-        public bool loop { get; private set; }
+        public bool loop { get; set; }
 
         /// <summary>
         /// Whether the audio persists in between scene changes
         /// </summary>
-        public bool persist { get; private set; }
+        public bool persist { get; set; }
 
         /// <summary>
         /// How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)
         /// </summary>
-        public float fadeInSeconds { get; private set; }
+        public float fadeInSeconds { get; set; }
 
         /// <summary>
         /// How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)
@@ -670,17 +670,17 @@ namespace EazyTools.SoundManager
         public float fadeOutSeconds { get; set; }
 
         /// <summary>
-        /// Wether the audio is currently playing
+        /// Whether the audio is currently playing
         /// </summary>
-        public bool playing { get; private set; }
+        public bool playing { get; set; }
 
         /// <summary>
-        /// Wether the audio is stopping
+        /// Whether the audio is stopping
         /// </summary>
         public bool stopping { get; private set; }
 
         /// <summary>
-        /// Wether the audio is paused
+        /// Whether the audio is paused
         /// </summary>
         public bool paused { get; private set; }
 
