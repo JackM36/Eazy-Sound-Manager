@@ -638,6 +638,7 @@ namespace EazyTools.SoundManager
         private static int audioCounter = 0;
         private float volume;
         private float targetVolume;
+        private float tempFadeSeconds;
 
         /// <summary>
         /// The ID of the Audio
@@ -718,6 +719,7 @@ namespace EazyTools.SoundManager
             this.loop = loop;
             this.persist = persist;
             this.targetVolume = volume;
+            this.tempFadeSeconds = -1;
             this.volume = 0f;
             this.fadeInSeconds = fadeInValue;
             this.fadeOutSeconds = fadeOutValue;
@@ -779,7 +781,27 @@ namespace EazyTools.SoundManager
         /// <param name="volume">The target volume</param>
         public void SetVolume(float volume)
         {
+            if(volume > targetVolume)
+            {
+                SetVolume(volume, fadeOutSeconds);
+            }
+            else
+            {
+                SetVolume(volume, fadeInSeconds);
+            }
+        }
+
+        /// <summary>
+        /// Sets the audio volume
+        /// </summary>
+        /// <param name="volume">The target volume</param>
+        /// <param name="fadeSeconds">How many seconds it needs for the audio to fade in/out to reach target volume. If passed, it will override the Audio's fade in/out seconds, but only for this transition</param>
+        public void SetVolume(float volume, float fadeSeconds)
+        {
             targetVolume = Mathf.Clamp01(volume);
+            fadeInterpolater = 0;
+            onFadeStartVolume = this.volume;
+            tempFadeSeconds = fadeSeconds;
         }
 
         public void Update()
@@ -792,14 +814,18 @@ namespace EazyTools.SoundManager
                 fadeInterpolater += Time.deltaTime;
                 if (volume > targetVolume)
                 {
-                    fadeValue = fadeOutSeconds;
+                    fadeValue = tempFadeSeconds != -1? tempFadeSeconds: fadeOutSeconds;
                 }
                 else
                 {
-                    fadeValue = fadeInSeconds;
+                    fadeValue = tempFadeSeconds != -1 ? tempFadeSeconds : fadeInSeconds;
                 }
 
                 volume = Mathf.Lerp(onFadeStartVolume, targetVolume, fadeInterpolater / fadeValue);
+            }
+            else if(tempFadeSeconds != -1)
+            {
+                tempFadeSeconds = -1;
             }
 
             switch (audioType)
@@ -820,7 +846,6 @@ namespace EazyTools.SoundManager
                         break;
                     }
             }
-
 
             if (volume == 0f && stopping)
             {

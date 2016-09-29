@@ -123,7 +123,7 @@ public class EazySoundManagerDemo : MonoBehaviour
         int audioControlID = int.Parse(audioControlIDStr);
         EazySoundDemoAudioControls audioControl = AudioControls[audioControlID];
 
-        audioControl.audio.SetVolume(audioControl.volumeSlider.value);
+        audioControl.audio.SetVolume(audioControl.volumeSlider.value, 0);
     }
 
     public void GlobalVolumeChanged()
