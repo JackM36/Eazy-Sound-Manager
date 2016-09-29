@@ -13,7 +13,7 @@ Moreover, Eazy Sound Manager has the option to make music persist through multip
 - Loop music
 - Fade in and fade out transitions
 - Global volume settings
-- Music persistance across scenes
+- Music persistence across scenes
 
 ## Installation
 No setup is needed. Just place the SoundManager.cs script somewhere inside your assets folder, and you are ready to go.
