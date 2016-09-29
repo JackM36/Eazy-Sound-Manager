@@ -29,5 +29,10 @@ Read the [wiki](https://github.com/JackM36/Eazy-Sound-Manager/wiki) for more inf
 - Jack Hadjicosti (https://github.com/JackM36)
 - Andreas Andreou (https://github.com/AndAndreou)
 
+## Donate
+Eazy Sound Manager is a free asset done in my free time. However, donations helps me improve it, as well as develop and publish more projects like this.
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GGTKA37Z7TBTE)
+
 ## License
 MIT License. Copyright 2016 Jack Hadjicosti.
