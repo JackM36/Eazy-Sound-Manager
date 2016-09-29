@@ -1830,6 +1830,30 @@ Units is normalized time.</para>
       <param name="binding">The bindings which defines the path and the property of the curve.</param>
       <param name="curve">The curve to add. Setting this to null will remove the curve.</param>
     </member>
+    <member name="M:UnityEditor.AnimationUtility.SetKeyBroken(UnityEngine.AnimationCurve,System.Int32,System.Boolean)">
+      <summary>
+        <para>Change the specified keyframe broken tangent flag.</para>
+      </summary>
+      <param name="curve">The curve to modify.</param>
+      <param name="index">Keyframe index.</param>
+      <param name="broken">Broken flag.</param>
+    </member>
+    <member name="M:UnityEditor.AnimationUtility.SetKeyLeftTangentMode(UnityEngine.AnimationCurve,System.Int32,UnityEditor.AnimationUtility/TangentMode)">
+      <summary>
+        <para>Change the specified keyframe tangent mode.</para>
+      </summary>
+      <param name="curve">The curve to modify.</param>
+      <param name="index">Keyframe index.</param>
+      <param name="tangentMode">Tangent mode.</param>
+    </member>
+    <member name="M:UnityEditor.AnimationUtility.SetKeyRightTangentMode(UnityEngine.AnimationCurve,System.Int32,UnityEditor.AnimationUtility/TangentMode)">
+      <summary>
+        <para>Change the specified keyframe tangent mode.</para>
+      </summary>
+      <param name="curve">The curve to modify.</param>
+      <param name="index">Keyframe index.</param>
+      <param name="tangentMode">Tangent mode.</param>
+    </member>
     <member name="M:UnityEditor.AnimationUtility.SetObjectReferenceCurve(UnityEngine.AnimationClip,UnityEditor.EditorCurveBinding,UnityEditor.ObjectReferenceKeyframe[])">
       <summary>
         <para>Adds, modifies or removes an object reference curve in a given clip.</para>
@@ -1837,6 +1861,31 @@ Units is normalized time.</para>
       <param name="keyframes">Setting this to null will remove the curve.</param>
       <param name="clip"></param>
       <param name="binding"></param>
+    </member>
+    <member name="T:UnityEditor.AnimationUtility.TangentMode">
+      <summary>
+        <para>Tangent constraints on Keyframe.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.AnimationUtility.TangentMode.Auto">
+      <summary>
+        <para>The tangents are automatically set to make the curve go smoothly through the key.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.AnimationUtility.TangentMode.Constant">
+      <summary>
+        <para>The curve retains a constant value between two keys.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.AnimationUtility.TangentMode.Free">
+      <summary>
+        <para>The tangent can be freely set by dragging the tangent handle.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.AnimationUtility.TangentMode.Linear">
+      <summary>
+        <para>The tangent points towards the neighboring key.</para>
+      </summary>
     </member>
     <member name="T:UnityEditor.ApiCompatibilityLevel">
       <summary>
@@ -2045,7 +2094,7 @@ Units is normalized time.</para>
       </summary>
       <param name="path">Filesystem path for the asset.</param>
       <returns>
-        <para>GUID</para>
+        <para>GUID.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.AssetDatabase.ClearLabels(UnityEngine.Object)">
@@ -2459,7 +2508,7 @@ Units is normalized time.</para>
       <param name="assetPath">Path of the asset to load.</param>
       <param name="type">Data type of the asset.</param>
       <returns>
-        <para>The asset matching the parameters</para>
+        <para>The asset matching the parameters.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.AssetDatabase.LoadMainAssetAtPath(System.String)">
@@ -2659,7 +2708,8 @@ Units is normalized time.</para>
     </member>
     <member name="T:UnityEditor.AssetModificationProcessor">
       <summary>
-        <para>AssetModificationProcessor lets you hook into saving of serialized assets and scenes which are edited inside Unity.</para>
+        <para>AssetModificationProcessor lets you hook into saving of serialized assets and
+      scenes which are edited inside Unity.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.AssetMoveResult">
@@ -2784,6 +2834,71 @@ Units is normalized time.</para>
         <para>Set the asset preview cache to a size that can hold all visible previews on the screen at once.</para>
       </summary>
       <param name="size">The number of previews that can be loaded into the cache before the least used previews are being unloaded.</param>
+    </member>
+    <member name="T:UnityEditor.AudioCurveRendering">
+      <summary>
+        <para>Antialiased curve rendering functionality used by audio tools in the editor.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.AudioCurveRendering.AudioCurveAndColorEvaluator">
+      <summary>
+        <para>Curve evaluation function that allows simultaneous evaluation of the curve y-value and a color of the curve at that point.</para>
+      </summary>
+      <param name="x">Normalized x-position in the range [0; 1] at which the curve should be evaluated.</param>
+      <param name="col">Color of the curve at the evaluated point.</param>
+    </member>
+    <member name="T:UnityEditor.AudioCurveRendering.AudioCurveEvaluator">
+      <summary>
+        <para>Curve evaluation function used to evaluate the curve y-value and at the specified point.</para>
+      </summary>
+      <param name="x">Normalized x-position in the range [0; 1] at which the curve should be evaluated.</param>
+    </member>
+    <member name="T:UnityEditor.AudioCurveRendering.AudioMinMaxCurveAndColorEvaluator">
+      <summary>
+        <para>Curve evaluation function that allows simultaneous evaluation of the min- and max-curves. The returned minValue and maxValue values are expected to be in the range [-1; 1] and a value of 0 corresponds to the vertical center of the rectangle that is drawn into. Values outside of this range will be clamped. Additionally the color of the curve at this point is evaluated.</para>
+      </summary>
+      <param name="x">Normalized x-position in the range [0; 1] at which the min- and max-curves should be evaluated.</param>
+      <param name="col">Color of the curve at the specified evaluation point.</param>
+      <param name="minValue">Returned value of the minimum curve. Clamped to [-1; 1].</param>
+      <param name="maxValue">Returned value of the maximum curve. Clamped to [-1; 1].</param>
+    </member>
+    <member name="M:UnityEditor.AudioCurveRendering.DrawCurve(UnityEngine.Rect,UnityEditor.AudioCurveRendering/AudioCurveEvaluator,UnityEngine.Color)">
+      <summary>
+        <para>Renders a thin curve determined by the curve evaluation function. The solid color of the curve is set by the curveColor argument.</para>
+      </summary>
+      <param name="r">Rectangle determining the size of the graph.</param>
+      <param name="eval">Curve evaluation function.</param>
+      <param name="curveColor">Solid fill color of the curve. The alpha-channel determines the amount of opacity.</param>
+    </member>
+    <member name="M:UnityEditor.AudioCurveRendering.DrawFilledCurve(UnityEngine.Rect,UnityEditor.AudioCurveRendering/AudioCurveEvaluator,UnityEngine.Color)">
+      <summary>
+        <para>Fills the area between the curve evaluated by the AudioCurveAndColorEvaluator provided and the bottom of the rectngle with smooth gradients along the edges.</para>
+      </summary>
+      <param name="r">Rectangle determining the size of the graph.</param>
+      <param name="eval">Normalized x-position in the range [0; 1] at which the curve should be evaluated. The returned value is expected to be in the range [-1; 1] and a value of 0 corresponds to the vertical center of the rectangle that is drawn into. Values outside of this range will be clamped.</param>
+      <param name="curveColor">Solid fill color of the curve. The alpha-channel determines the amount of opacity.</param>
+    </member>
+    <member name="M:UnityEditor.AudioCurveRendering.DrawFilledCurve(UnityEngine.Rect,UnityEditor.AudioCurveRendering/AudioCurveAndColorEvaluator)">
+      <summary>
+        <para>Fills the area between the curve evaluated by the AudioCurveAndColorEvaluator provided and the bottom of the rectngle with smooth gradients along the edges.</para>
+      </summary>
+      <param name="r">Rectangle determining the size of the graph.</param>
+      <param name="eval">Normalized x-position in the range [0; 1] at which the curve should be evaluated. The returned value is expected to be in the range [-1; 1] and a value of 0 corresponds to the vertical center of the rectangle that is drawn into. Values outside of this range will be clamped.</param>
+      <param name="curveColor">Solid fill color of the curve. The alpha-channel determines the amount of opacity.</param>
+    </member>
+    <member name="M:UnityEditor.AudioCurveRendering.DrawMinMaxFilledCurve(UnityEngine.Rect,UnityEditor.AudioCurveRendering/AudioMinMaxCurveAndColorEvaluator)">
+      <summary>
+        <para>Fills the area between the two curves evaluated by the AudioMinMaxCurveAndColorEvaluator provided with smooth gradients along the edges.</para>
+      </summary>
+      <param name="r">Rectangle determining the size of the graph.</param>
+      <param name="eval">Normalized x-position in the range [0; 1] at which the min- and max-curves should be evaluated. The returned minValue and maxValue values are expected to be in the range [-1; 1] and a value of 0 corresponds to the vertical center of the rectangle that is drawn into. Values outside of this range will be clamped.</param>
+    </member>
+    <member name="M:UnityEditor.AudioCurveRendering.DrawSymmetricFilledCurve(UnityEngine.Rect,UnityEditor.AudioCurveRendering/AudioCurveAndColorEvaluator)">
+      <summary>
+        <para>Fills the area between the curve evaluated by the AudioCurveAndColorEvaluator provided and its vertical mirror image with smooth gradients along the edges. Useful for drawing amplitude plots of audio signals.</para>
+      </summary>
+      <param name="r">Rectangle determining the size of the graph.</param>
+      <param name="eval">Normalized x-position in the range [0; 1] at which the curve should be evaluated. The returned value is expected to be in the range [0; 1] and a value of 0 corresponds to the vertical center of the rectangle that is drawn into. Values outside of this range will be clamped.</param>
     </member>
     <member name="T:UnityEditor.AudioImporter">
       <summary>
@@ -2973,6 +3088,16 @@ Amount of compression. The value roughly corresponds to the ratio between the re
         <para>Build assetBundle without any special option.</para>
       </summary>
     </member>
+    <member name="F:UnityEditor.BuildAssetBundleOptions.OmitClassVersions">
+      <summary>
+        <para>Do not include class version numbers when writing out an AssetBundle.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.BuildAssetBundleOptions.StrictMode">
+      <summary>
+        <para>Do not allow the build to succeed if any errors are reporting during it.</para>
+      </summary>
+    </member>
     <member name="F:UnityEditor.BuildAssetBundleOptions.UncompressedAssetBundle">
       <summary>
         <para>Don't compress the data when creating the asset bundle.</para>
@@ -3041,6 +3166,11 @@ Amount of compression. The value roughly corresponds to the ratio between the re
     <member name="F:UnityEditor.BuildOptions.ShowBuiltPlayer">
       <summary>
         <para>Show the built player.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.BuildOptions.StrictMode">
+      <summary>
+        <para>Do not allow the build to succeed if any errors are reporting during it.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.BuildOptions.SymlinkLibraries">
@@ -3426,6 +3556,11 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
         <para>Build a Wii U standalone.</para>
       </summary>
     </member>
+    <member name="F:UnityEditor.BuildTarget.WP8Player">
+      <summary>
+        <para>Build a Windows Phone 8 player.</para>
+      </summary>
+    </member>
     <member name="F:UnityEditor.BuildTarget.WSAPlayer">
       <summary>
         <para>Build an Windows Store Apps player.</para>
@@ -3464,11 +3599,6 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
     <member name="F:UnityEditor.BuildTargetGroup.Android">
       <summary>
         <para>Android target.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.BuildTargetGroup.GLESEmu">
-      <summary>
-        <para>GLESEmu target.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.BuildTargetGroup.Nintendo3DS">
@@ -3526,6 +3656,11 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
         <para>Nintendo Wii U target.</para>
       </summary>
     </member>
+    <member name="F:UnityEditor.BuildTargetGroup.WP8">
+      <summary>
+        <para>Windows Phone 8 target.</para>
+      </summary>
+    </member>
     <member name="F:UnityEditor.BuildTargetGroup.WSA">
       <summary>
         <para>Windows Store Apps target.</para>
@@ -3575,7 +3710,7 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
     </member>
     <member name="T:UnityEditor.Callbacks.PostProcessSceneAttribute">
       <summary>
-        <para>Add this attribute to get a callback just before building the scene.</para>
+        <para>Add this attribute to a method to get a notification just after building the scene.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.CanEditMultipleObjects">
@@ -4374,7 +4509,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorApplication.SaveCurrentSceneIfUserWantsTo">
       <summary>
-        <para>Ask the user if he wants to save the open scene.</para>
+        <para>Ask the user if they want to save the open scene.</para>
       </summary>
     </member>
     <member name="M:UnityEditor.EditorApplication.SaveScene">
@@ -4644,6 +4779,50 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
       <param name="ranges">Optional rectangle that the curve is restrained within.</param>
       <param name="value"></param>
     </member>
+    <member name="M:UnityEditor.EditorGUI.DelayedDoubleField(UnityEngine.Rect,System.Double,UnityEngine.GUIStyle)">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="position">Rectangle on the screen to use for the double field.</param>
+      <param name="label">Optional label to display in front of the double field.</param>
+      <param name="value">The value to edit.</param>
+      <param name="style">Optional GUIStyle.</param>
+      <returns>
+        <para>The value entered by the user. Note that the return value will not change until the user has pressed enter or focus is moved away from the double field.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUI.DelayedDoubleField(UnityEngine.Rect,System.String,System.Double,UnityEngine.GUIStyle)">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="position">Rectangle on the screen to use for the double field.</param>
+      <param name="label">Optional label to display in front of the double field.</param>
+      <param name="value">The value to edit.</param>
+      <param name="style">Optional GUIStyle.</param>
+      <returns>
+        <para>The value entered by the user. Note that the return value will not change until the user has pressed enter or focus is moved away from the double field.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUI.DelayedDoubleField(UnityEngine.Rect,UnityEngine.GUIContent,System.Double,UnityEngine.GUIStyle)">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="position">Rectangle on the screen to use for the double field.</param>
+      <param name="label">Optional label to display in front of the double field.</param>
+      <param name="value">The value to edit.</param>
+      <param name="style">Optional GUIStyle.</param>
+      <returns>
+        <para>The value entered by the user. Note that the return value will not change until the user has pressed enter or focus is moved away from the double field.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUI.DelayedDoubleField">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="position">Rectangle on the screen to use for the double field.</param>
+      <param name="property">The double property to edit.</param>
+      <param name="label">Optional label to display in front of the double field. Pass GUIContent.none to hide label.</param>
+    </member>
     <member name="M:UnityEditor.EditorGUI.DelayedFloatField(UnityEngine.Rect,System.Single,UnityEngine.GUIStyle)">
       <summary>
         <para>Make a delayed text field for entering floats.</para>
@@ -4784,6 +4963,17 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     <member name="M:UnityEditor.EditorGUI.DisabledGroupScope.#ctor(System.Boolean)">
       <summary>
         <para>Create a new DisabledGroupScope and begin the corresponding group.</para>
+      </summary>
+      <param name="disabled">Boolean specifying if the controls inside the group should be disabled.</param>
+    </member>
+    <member name="T:UnityEditor.EditorGUI.DisabledScope">
+      <summary>
+        <para>Create a group of controls that can be disabled.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.EditorGUI.DisabledScope.#ctor(System.Boolean)">
+      <summary>
+        <para>Create a new DisabledScope and begin the corresponding group.</para>
       </summary>
       <param name="disabled">Boolean specifying if the controls inside the group should be disabled.</param>
     </member>
@@ -5795,7 +5985,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,System.Int64)">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -5807,7 +5997,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,System.String,System.Int64)">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -5819,19 +6009,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,UnityEngine.GUIContent,System.Int64)">
       <summary>
-        <para>Make a text field for entering integers.</para>
-      </summary>
-      <param name="position">Rectangle on the screen to use for the long field.</param>
-      <param name="label">Optional label to display in front of the long field.</param>
-      <param name="value">The value to edit.</param>
-      <param name="style">Optional GUIStyle.</param>
-      <returns>
-        <para>The value entered by the user.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEditor.EditorGUI.LongField">
-      <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -5843,7 +6021,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,System.String,System.Int64,UnityEngine.GUIStyle)">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -5855,7 +6033,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,UnityEngine.GUIContent,System.Int64,UnityEngine.GUIStyle)">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -7198,6 +7376,126 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.DelayedDoubleField(System.Double,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="label">Optional label to display in front of the double field.</param>
+      <param name="value">The value to edit.</param>
+      <param name="style">Optional GUIStyle.</param>
+      <param name="options">
+          An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+          See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+          GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        </param>
+      <returns>
+        <para>The value entered by the user. Note that the return value will not change until the user has pressed enter or focus is moved away from the double field.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.DelayedDoubleField(System.Double,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="label">Optional label to display in front of the double field.</param>
+      <param name="value">The value to edit.</param>
+      <param name="style">Optional GUIStyle.</param>
+      <param name="options">
+          An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+          See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+          GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        </param>
+      <returns>
+        <para>The value entered by the user. Note that the return value will not change until the user has pressed enter or focus is moved away from the double field.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.DelayedDoubleField(System.String,System.Double,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="label">Optional label to display in front of the double field.</param>
+      <param name="value">The value to edit.</param>
+      <param name="style">Optional GUIStyle.</param>
+      <param name="options">
+          An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+          See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+          GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        </param>
+      <returns>
+        <para>The value entered by the user. Note that the return value will not change until the user has pressed enter or focus is moved away from the double field.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.DelayedDoubleField(System.String,System.Double,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="label">Optional label to display in front of the double field.</param>
+      <param name="value">The value to edit.</param>
+      <param name="style">Optional GUIStyle.</param>
+      <param name="options">
+          An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+          See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+          GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        </param>
+      <returns>
+        <para>The value entered by the user. Note that the return value will not change until the user has pressed enter or focus is moved away from the double field.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.DelayedDoubleField(UnityEngine.GUIContent,System.Double,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="label">Optional label to display in front of the double field.</param>
+      <param name="value">The value to edit.</param>
+      <param name="style">Optional GUIStyle.</param>
+      <param name="options">
+          An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+          See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+          GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        </param>
+      <returns>
+        <para>The value entered by the user. Note that the return value will not change until the user has pressed enter or focus is moved away from the double field.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.DelayedDoubleField(UnityEngine.GUIContent,System.Double,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="label">Optional label to display in front of the double field.</param>
+      <param name="value">The value to edit.</param>
+      <param name="style">Optional GUIStyle.</param>
+      <param name="options">
+          An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+          See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+          GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        </param>
+      <returns>
+        <para>The value entered by the user. Note that the return value will not change until the user has pressed enter or focus is moved away from the double field.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.DelayedDoubleField">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="property">The double property to edit.</param>
+      <param name="label">Optional label to display in front of the double field. Pass GUIContent.none to hide label.</param>
+      <param name="options">
+          An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+          See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+          GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        </param>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.DelayedDoubleField">
+      <summary>
+        <para>Make a delayed text field for entering doubles.</para>
+      </summary>
+      <param name="property">The double property to edit.</param>
+      <param name="label">Optional label to display in front of the double field. Pass GUIContent.none to hide label.</param>
+      <param name="options">
+          An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+          See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+          GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        </param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.DelayedFloatField(System.Single,UnityEngine.GUILayoutOption[])">
       <summary>
@@ -8559,7 +8857,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(System.Int64,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -8573,7 +8871,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(System.Int64,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -8587,7 +8885,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(System.String,System.Int64,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -8601,7 +8899,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(System.String,System.Int64,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -8615,7 +8913,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(UnityEngine.GUIContent,System.Int64,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -8629,7 +8927,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(UnityEngine.GUIContent,System.Int64,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -9817,6 +10115,13 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
         <para>The width in pixels reserved for labels of Editor GUI controls.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.EditorGUIUtility.pixelsPerPoint">
+      <summary>
+        <para>The scale of GUI points relative to screen pixels for the current view
+
+This value is the number of screen pixels per point of interface space. For instance, 2.0 on retina displays. Note that the value may differ from one view to the next if the views are on monitors with different UI scales.</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.EditorGUIUtility.singleLineHeight">
       <summary>
         <para>Get the height used for a single Editor control such as a one-line EditorGUI.TextField or EditorGUI.Popup.</para>
@@ -10042,6 +10347,42 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       </summary>
       <param name="obj"></param>
       <param name="targetInstanceID"></param>
+    </member>
+    <member name="M:UnityEditor.EditorGUIUtility.PixelsToPoints(UnityEngine.Vector2)">
+      <summary>
+        <para>Convert a position from pixel to point space.</para>
+      </summary>
+      <param name="position">A GUI position in pixel space.</param>
+      <returns>
+        <para>A vector representing the same position in point space.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUIUtility.PixelsToPoints(UnityEngine.Rect)">
+      <summary>
+        <para>Convert a Rect from pixel space to point space.</para>
+      </summary>
+      <param name="rect">A GUI rect measured in pixels.</param>
+      <returns>
+        <para>A rect representing the same area in points.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUIUtility.PointsToPixels(UnityEngine.Vector2)">
+      <summary>
+        <para>Convert a Rect from point space to pixel space.</para>
+      </summary>
+      <param name="position">A GUI rect measured in points.</param>
+      <returns>
+        <para>A rect representing the same area in pixels.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUIUtility.PointsToPixels(UnityEngine.Rect)">
+      <summary>
+        <para>Converts a position from point to pixel space.</para>
+      </summary>
+      <param name="rect">A GUI position in point space.</param>
+      <returns>
+        <para>The same position in pixel space.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.EditorGUIUtility.QueueGameViewInputEvent(UnityEngine.Event)">
       <summary>
@@ -10490,16 +10831,6 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
         <para>Android platform options.</para>
       </summary>
     </member>
-    <member name="P:UnityEditor.EditorUserBuildSettings.blackberryBuildSubtarget">
-      <summary>
-        <para>The texture compression type to be used when building.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.EditorUserBuildSettings.blackberryBuildType">
-      <summary>
-        <para>The build type to be used.</para>
-      </summary>
-    </member>
     <member name="P:UnityEditor.EditorUserBuildSettings.buildScriptsOnly">
       <summary>
         <para>Is build script only enabled.</para>
@@ -10523,6 +10854,11 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     <member name="P:UnityEditor.EditorUserBuildSettings.enableHeadlessMode">
       <summary>
         <para>Enables a Linux headless build.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.EditorUserBuildSettings.explicitDivideByZeroChecks">
+      <summary>
+        <para>Are divide by zero's actively checked?</para>
       </summary>
     </member>
     <member name="P:UnityEditor.EditorUserBuildSettings.explicitNullChecks">
@@ -10605,9 +10941,9 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
         <para>The texture compression type to be used when building.</para>
       </summary>
     </member>
-    <member name="P:UnityEditor.EditorUserBuildSettings.webGLOptimizationLevel">
+    <member name="P:UnityEditor.EditorUserBuildSettings.webGLUsePreBuiltUnityEngine">
       <summary>
-        <para>Optimization level for WebGL.</para>
+        <para>Use prebuilt JavaScript version of Unity engine.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.EditorUserBuildSettings.webPlayerOfflineDeployment">
@@ -10682,6 +11018,13 @@ MYCOMPUTER\SHAREDFOLDER\.</para>
       </summary>
       <param name="target"></param>
     </member>
+    <member name="M:UnityEditor.EditorUserBuildSettings.GetPlatformSettings(System.String,System.String)">
+      <summary>
+        <para>Returns value for platform specifc Editor setting.</para>
+      </summary>
+      <param name="platformName">The name of the platform.</param>
+      <param name="name">The name of the setting.</param>
+    </member>
     <member name="M:UnityEditor.EditorUserBuildSettings.GetWSADotNetNative(UnityEditor.WSABuildType)">
       <summary>
         <para>Is .NET Native enabled for specific build configuration.
@@ -10698,6 +11041,14 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
       </summary>
       <param name="target"></param>
       <param name="location"></param>
+    </member>
+    <member name="M:UnityEditor.EditorUserBuildSettings.SetPlatformSettings(System.String,System.String,System.String)">
+      <summary>
+        <para>Set platform specifc Editor setting.</para>
+      </summary>
+      <param name="platformName">The name of the platform.</param>
+      <param name="name">The name of the setting.</param>
+      <param name="value">Setting value.</param>
     </member>
     <member name="M:UnityEditor.EditorUserBuildSettings.SetWSADotNetNative(UnityEditor.WSABuildType,System.Boolean)">
       <summary>
@@ -10760,6 +11111,13 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
     <member name="M:UnityEditor.EditorUtility.CopySerialized(UnityEngine.Object,UnityEngine.Object)">
       <summary>
         <para>Copy all settings of a Unity Object.</para>
+      </summary>
+      <param name="source"></param>
+      <param name="dest"></param>
+    </member>
+    <member name="M:UnityEditor.EditorUtility.CopySerializedIfDifferent(UnityEngine.Object,UnityEngine.Object)">
+      <summary>
+        <para>Copy all settings of a Unity Object to a second Object if they differ.</para>
       </summary>
       <param name="source"></param>
       <param name="dest"></param>
@@ -10919,9 +11277,9 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
     </member>
     <member name="M:UnityEditor.EditorUtility.SetDirty(UnityEngine.Object)">
       <summary>
-        <para>Marks target object as dirty.</para>
+        <para>Marks target object as dirty. (Only suitable for non-scene objects).</para>
       </summary>
-      <param name="target"></param>
+      <param name="target">The object to mark as dirty.</param>
     </member>
     <member name="M:UnityEditor.EditorUtility.SetObjectEnabled(UnityEngine.Object,System.Boolean)">
       <summary>
@@ -10943,7 +11301,7 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
       </summary>
       <param name="ignoreReferencesFromScript">When true delete assets even if linked in scripts.</param>
     </member>
-    <member name="M:UnityEditor.EditorUtility.UnloadUnusedAssetsImmediate(System.Boolean)">
+    <member name="M:UnityEditor.EditorUtility.UnloadUnusedAssetsImmediate">
       <summary>
         <para>Unloads assets that are not used.</para>
       </summary>
@@ -11250,10 +11608,10 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
     </member>
     <member name="M:UnityEditor.EditorWindow.ShowAsDropDown(UnityEngine.Rect,UnityEngine.Vector2)">
       <summary>
-        <para>Show window with dropdown behaviour (e.g. window is closed when it loses focus) and having.</para>
+        <para>Shows a window with dropdown behaviour and styling.</para>
       </summary>
-      <param name="buttonRect">Is used for positioning the window.</param>
-      <param name="windowSize">Is used for setting up initial size of the window.</param>
+      <param name="buttonRect">The button from which the position of the window will be determined (see description).</param>
+      <param name="windowSize">The initial size of the window.</param>
     </member>
     <member name="M:UnityEditor.EditorWindow.ShowAuxWindow">
       <summary>
@@ -12016,16 +12374,18 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
     </member>
     <member name="M:UnityEditor.Handles.Disc(UnityEngine.Quaternion,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Boolean,System.Single)">
       <summary>
-        <para>Make a 3D disc that can be dragged with the mouse.</para>
+        <para>Make a 3D disc that can be dragged with the mouse.
+Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
       </summary>
       <param name="rotation">The rotation of the disc.</param>
       <param name="position">The center of the disc.</param>
       <param name="axis">The axis to rotate around.</param>
       <param name="size">The size of the disc in world space See Also:HandleUtility.GetHandleSize.</param>
       <param name="cutoffPlane">If true, only the front-facing half of the circle is draw / draggable. This is useful when you have many overlapping rotation axes (like in the default rotate tool) to avoid clutter.</param>
-      <param name="snap">The new value after the user has modified it.
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</param>
+      <param name="snap">The grid size to snap to.</param>
+      <returns>
+        <para>The new rotation value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.Handles.DotCap(System.Int32,UnityEngine.Vector3,UnityEngine.Quaternion,System.Single)">
       <summary>
@@ -12093,8 +12453,8 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       </summary>
       <param name="startPosition">The start point of the bezier line.</param>
       <param name="endPosition">The end point of the bezier line.</param>
-      <param name="startTangent">The start tangent of the bezier line.</param>
-      <param name="endTangent">The end tangent of the bezier line.</param>
+      <param name="startTangent">The second control point of the bezier line.</param>
+      <param name="endTangent">The third control point of the bezier line.</param>
       <param name="color">The color to use for the bezier line.</param>
       <param name="texture">The texture to use for drawing the bezier line.</param>
       <param name="width">The width of the bezier line.</param>
@@ -12224,6 +12584,13 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
 
 Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</param>
     </member>
+    <member name="M:UnityEditor.Handles.DrawWireCube(UnityEngine.Vector3,UnityEngine.Vector3)">
+      <summary>
+        <para>Draw a wireframe box with center and size.</para>
+      </summary>
+      <param name="center"></param>
+      <param name="size"></param>
+    </member>
     <member name="M:UnityEditor.Handles.DrawWireDisc(UnityEngine.Vector3,UnityEngine.Vector3,System.Single)">
       <summary>
         <para>Draw the outline of a flat disc in 3D space.</para>
@@ -12249,7 +12616,10 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <param name="capFunc">The function to use for drawing the handle, eg, Handles.RectangleCap
 
 Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</param>
-      <param name="snap"></param>
+      <param name="snap">The grid size to snap movement to.</param>
+      <returns>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.Handles.FreeRotateHandle(UnityEngine.Quaternion,UnityEngine.Vector3,System.Single)">
       <summary>
@@ -12260,6 +12630,9 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <param name="size">The size of the handle.
 
 Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</param>
+      <returns>
+        <para>The new rotation value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.Handles.GetMainGameViewSize">
       <summary>
@@ -12343,7 +12716,7 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <param name="position">Center of the handle in 3D space.</param>
       <param name="rotation">Orientation of the handle in 3D space.</param>
       <returns>
-        <para>The new position. If the user has not performed any operation, it will return the same value as you passed it in postion.
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.
 
 Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
       </returns>
@@ -12355,9 +12728,9 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <param name="rotation">Orientation of the handle.</param>
       <param name="position">Center of the handle in 3D space.</param>
       <param name="radius">Radius to modify.</param>
-      <param name="handlesOnly"></param>
+      <param name="handlesOnly">Whether to omit the circular outline of the radius and only draw the point handles.</param>
       <returns>
-        <para>The modified radius
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.
 
 Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
       </returns>
@@ -12369,9 +12742,9 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <param name="rotation">Orientation of the handle.</param>
       <param name="position">Center of the handle in 3D space.</param>
       <param name="radius">Radius to modify.</param>
-      <param name="handlesOnly"></param>
+      <param name="handlesOnly">Whether to omit the circular outline of the radius and only draw the point handles.</param>
       <returns>
-        <para>The modified radius
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.
 
 Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
       </returns>
@@ -12383,50 +12756,54 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <param name="rotation">Orientation of the handle.</param>
       <param name="position">Center of the handle in 3D space.</param>
       <returns>
-        <para>The modified rotation
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
+        <para>The new rotation value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.ScaleHandle(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Quaternion,System.Single)">
       <summary>
-        <para>Make a Scene view scale handle.</para>
+        <para>Make a Scene view scale handle.
+
+Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
       </summary>
       <param name="scale">Scale to modify.</param>
       <param name="position">The position of the handle.</param>
       <param name="rotation">The rotation of the handle.</param>
-      <param name="size"></param>
+      <param name="size">Allows you to scale the size of the handle on-scren.</param>
       <returns>
-        <para>The new scale vector.
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.ScaleSlider(System.Single,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Quaternion,System.Single,System.Single)">
       <summary>
-        <para>Make a directional scale slider.</para>
+        <para>Make a directional scale slider.
+
+Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
       </summary>
       <param name="scale">The value the user can modify.</param>
       <param name="position">The position of the handle.</param>
       <param name="direction">The direction of the handle.</param>
       <param name="rotation">The rotation of whole object.</param>
       <param name="size">The size of the handle.</param>
-      <param name="snap">The new value after the user has modified it. 
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</param>
+      <param name="snap">The new value after the user has modified it.</param>
+      <returns>
+        <para>The value modified by the user's interaction with the handle.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.Handles.ScaleValueHandle(System.Single,UnityEngine.Vector3,UnityEngine.Quaternion,System.Single,UnityEditor.Handles/DrawCapFunction,System.Single)">
       <summary>
-        <para>Make a single-float draggable handle.</para>
+        <para>Make a single-float draggable handle.
+
+Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
       </summary>
       <param name="value">The value the user can modify.</param>
       <param name="position">The position of the handle.</param>
       <param name="rotation">The rotation of the handle.</param>
       <param name="size">The size of the handle.</param>
       <param name="capFunc">The function to use for drawing the handle e.g. Handles.RectangleCap.</param>
-      <param name="snap">The new value after the user has modified it. 
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</param>
+      <param name="snap">The new value after the user has modified it.</param>
+      <returns>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.Handles.SelectionFrame(System.Int32,UnityEngine.Vector3,UnityEngine.Quaternion,System.Single)">
       <summary>
@@ -12453,27 +12830,33 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     </member>
     <member name="M:UnityEditor.Handles.Slider(UnityEngine.Vector3,UnityEngine.Vector3)">
       <summary>
-        <para>Make a 3D slider.</para>
+        <para>Make a 3D slider.
+
+Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
       </summary>
       <param name="position">The position of the current point.</param>
       <param name="direction">The direction of the sliding.</param>
       <param name="size">3D size the size of the handle.</param>
       <param name="drawFunc">The function to call for doing the actual drawing - by default, it's Handles.ArrowCap, but any function that has the same signature can be used.</param>
-      <param name="snap">The snap value (see Handles.SnapValue).
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</param>
+      <param name="snap">The snap value (see Handles.SnapValue).</param>
+      <returns>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.Handles.Slider(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEditor.Handles/DrawCapFunction,System.Single)">
       <summary>
-        <para>Make a 3D slider.</para>
+        <para>Make a 3D slider.
+
+Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
       </summary>
       <param name="position">The position of the current point.</param>
       <param name="direction">The direction of the sliding.</param>
       <param name="size">3D size the size of the handle.</param>
       <param name="drawFunc">The function to call for doing the actual drawing - by default, it's Handles.ArrowCap, but any function that has the same signature can be used.</param>
-      <param name="snap">The snap value (see Handles.SnapValue).
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</param>
+      <param name="snap">The snap value (see Handles.SnapValue).</param>
+      <returns>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.Handles.Slider2D(System.Int32,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEditor.Handles/DrawCapFunction,UnityEngine.Vector2,System.Boolean)">
       <summary>
@@ -12637,7 +13020,7 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     </member>
     <member name="M:UnityEditor.Handles.SnapValue(System.Single,System.Single)">
       <summary>
-        <para>Rounds the value val to the closest multiple of snap (snap can only be posiive).</para>
+        <para>Rounds the value val to the closest multiple of snap (snap can only be positive).</para>
       </summary>
       <param name="val"></param>
       <param name="snap"></param>
@@ -12807,7 +13190,10 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <summary>
         <para>Get world space size of a manipulator handle at given position.</para>
       </summary>
-      <param name="position"></param>
+      <param name="position">The position of the handle in 3d space.</param>
+      <returns>
+        <para>A constant screen-size for the handle, based on the distance between from the supplied handle's position to the camera.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.HandleUtility.GUIPointToWorldRay(UnityEngine.Vector2)">
       <summary>
@@ -13377,6 +13763,11 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>Allows to control the lightmapping job.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.Lightmapping.bakedGI">
+      <summary>
+        <para>Is baked GI enabled?</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.Lightmapping.bounceBoost">
       <summary>
         <para>Boost the albedo.</para>
@@ -13410,6 +13801,11 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     <member name="P:UnityEditor.Lightmapping.lightingDataAsset">
       <summary>
         <para>The lighting data asset used by the active scene.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.Lightmapping.realtimeGI">
+      <summary>
+        <para>Is realtime GI enabled?</para>
       </summary>
     </member>
     <member name="M:UnityEditor.Lightmapping.Bake">
@@ -13533,11 +13929,6 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     <member name="T:UnityEditor.MacFullscreenMode">
       <summary>
         <para>Mac fullscreen mode.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.MacFullscreenMode.CaptureDisplay">
-      <summary>
-        <para>Capture the display.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.MacFullscreenMode.FullscreenWindow">
@@ -13838,16 +14229,16 @@ See Also: MaterialLightmapFlags.</para>
         <para>Draw a range slider for a range shader property.</para>
       </summary>
       <param name="label">Label for the property.</param>
-      <param name="prop"></param>
-      <param name="position"></param>
+      <param name="prop">The property to edit.</param>
+      <param name="position">Position and size of the range slider control.</param>
     </member>
     <member name="M:UnityEditor.MaterialEditor.RangeProperty(UnityEngine.Rect,UnityEditor.MaterialProperty,System.String)">
       <summary>
         <para>Draw a range slider for a range shader property.</para>
       </summary>
       <param name="label">Label for the property.</param>
-      <param name="prop"></param>
-      <param name="position"></param>
+      <param name="prop">The property to edit.</param>
+      <param name="position">Position and size of the range slider control.</param>
     </member>
     <member name="M:UnityEditor.MaterialEditor.RegisterPropertyChangeUndo(System.String)">
       <summary>
@@ -14221,36 +14612,6 @@ See Also: MaterialLightmapFlags.</para>
         <para>Vector property.</para>
       </summary>
     </member>
-    <member name="T:UnityEditor.MaterialProperty.TexDim">
-      <summary>
-        <para>Texture dimension of a property.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.MaterialProperty.TexDim.Any">
-      <summary>
-        <para>Texture property accepts any texture type.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.MaterialProperty.TexDim.Cube">
-      <summary>
-        <para>Cubemap property.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.MaterialProperty.TexDim.None">
-      <summary>
-        <para>No texture type is set.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.MaterialProperty.TexDim.Tex2D">
-      <summary>
-        <para>Texture2D property.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.MaterialProperty.TexDim.Tex3D">
-      <summary>
-        <para>Texture3D property.</para>
-      </summary>
-    </member>
     <member name="T:UnityEditor.MaterialPropertyDrawer">
       <summary>
         <para>Base class to derive custom material property drawers from.</para>
@@ -14453,6 +14814,11 @@ See Also: MaterialLightmapFlags.</para>
     <member name="P:UnityEditor.MemoryProfiler.PackedNativeUnityEngineObject.name">
       <summary>
         <para>Name of this object.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.MemoryProfiler.PackedNativeUnityEngineObject.nativeObjectAddress">
+      <summary>
+        <para>The memory address of the native C++ object. This matches the "m_CachedPtr" field of UnityEngine.Object.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.MemoryProfiler.PackedNativeUnityEngineObject.size">
@@ -14930,14 +15296,15 @@ See Also: MaterialLightmapFlags.</para>
     </member>
     <member name="P:UnityEditor.ModelImporter.resampleCurves">
       <summary>
-        <para>If set to false, the importer will not resample animation curves when possible. Read more about.
+        <para>If set to false, the importer will not resample curves when possible.
+Read more about.
 
 Notes:
 
 - Some unsupported FBX features (such as PreRotation or PostRotation on transforms) will override this setting. In these situations, animation curves will still be resampled even if the setting is disabled. For best results, avoid using PreRotation, PostRotation and GetRotationPivot.
 
 - This option was introduced in Version 5.3. Prior to this version, Unity's import behaviour was as if this option was always enabled. Therefore enabling the option gives the same behaviour as pre-5.3 animation import.
-        </para>
+</para>
       </summary>
     </member>
     <member name="P:UnityEditor.ModelImporter.secondaryUVAngleDistortion">
@@ -15872,6 +16239,11 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
         <para>Enable GPU skinning on capable platforms.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.PlayerSettings.graphicsJobs">
+      <summary>
+        <para>Enable graphics jobs (multi threaded rendering).</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.PlayerSettings.iPhoneBundleIdentifier">
       <summary>
         <para>The bundle identifier of the iPhone application.</para>
@@ -15907,6 +16279,11 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
         <para>The name of your product.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.PlayerSettings.protectGraphicsMemory">
+      <summary>
+        <para>Protect graphics memory.</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.PlayerSettings.renderingPath">
       <summary>
         <para>Which rendering path is enabled?</para>
@@ -15930,6 +16307,16 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
     <member name="P:UnityEditor.PlayerSettings.showUnitySplashScreen">
       <summary>
         <para>Should the builtin Unity splash screen be shown?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.singlePassStereoRendering">
+      <summary>
+        <para>Should Unity support single-pass stereo rendering?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.splashScreenStyle">
+      <summary>
+        <para>The style to use for the builtin Unity splash screen.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.PlayerSettings.statusBarHidden">
@@ -16247,6 +16634,12 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
       </summary>
       <param name="targetGroup"></param>
     </member>
+    <member name="M:UnityEditor.PlayerSettings.GetStackTraceLogType(UnityEngine.LogType)">
+      <summary>
+        <para>Get stack trace logging options.</para>
+      </summary>
+      <param name="logType"></param>
+    </member>
     <member name="M:UnityEditor.PlayerSettings.GetUseDefaultGraphicsAPIs(UnityEditor.BuildTarget)">
       <summary>
         <para>Is a build platform using automatic graphics API choice?</para>
@@ -16345,196 +16738,6 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
     <member name="P:UnityEditor.PlayerSettings.MTRendering">
       <summary>
         <para>Is multi-threaded rendering enabled?</para>
-      </summary>
-    </member>
-    <member name="T:UnityEditor.PlayerSettings.Nintendo3DS">
-      <summary>
-        <para>Nintendo 3DS player settings.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.applicationId">
-      <summary>
-        <para>The unique ID of the application, issued by Nintendo.  (0x00300 -&gt; 0xf7fff)</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.compressStaticMem">
-      <summary>
-        <para>Specify true to enable static memory compression or false to disable it.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.disableDepthAndStencilBuffers">
-      <summary>
-        <para>Disable depth/stencil buffers, to free up memory.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.disableStereoscopicView">
-      <summary>
-        <para>Disable sterescopic (3D) view on the upper screen.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.enableSharedListOpt">
-      <summary>
-        <para>Enable shared L/R command list, for increased performance with stereoscopic rendering.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.enableVSync">
-      <summary>
-        <para>Enable vsync.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.extSaveDataNumber">
-      <summary>
-        <para>Specify the expanded save data number using 20 bits.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.logoStyle">
-      <summary>
-        <para>Application Logo Style.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.mediaSize">
-      <summary>
-        <para>Distribution media size.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.productCode">
-      <summary>
-        <para>Specifies the product code, or the add-on content code.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.region">
-      <summary>
-        <para>Specifies the title region settings.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.stackSize">
-      <summary>
-        <para>Specify the stack size of the main thread, in bytes.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.targetPlatform">
-      <summary>
-        <para>The 3DS target platform.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.title">
-      <summary>
-        <para>The title of the application.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.Nintendo3DS.useExtSaveData">
-      <summary>
-        <para>Specify true when using expanded save data.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEditor.PlayerSettings.Nintendo3DS.LogoStyle">
-      <summary>
-        <para>Nintendo 3DS logo style specification.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.LogoStyle.iQue">
-      <summary>
-        <para>For Chinese region titles.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.LogoStyle.Distributed">
-      <summary>
-        <para>For titles for which Nintendo purchased the publishing license from the software manufacturer, etc.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.LogoStyle.Licensed">
-      <summary>
-        <para>For all other titles.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.LogoStyle.Nintendo">
-      <summary>
-        <para>For Nintendo first-party titles.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEditor.PlayerSettings.Nintendo3DS.MediaSize">
-      <summary>
-        <para>Nintendo 3DS distribution media size.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.MediaSize.128MB">
-      <summary>
-        <para>128MB</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.MediaSize.1GB">
-      <summary>
-        <para>1GB</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.MediaSize.256MB">
-      <summary>
-        <para>256MB</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.MediaSize.2GB">
-      <summary>
-        <para>2GB</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.MediaSize.512MB">
-      <summary>
-        <para>512MB</para>
-      </summary>
-    </member>
-    <member name="T:UnityEditor.PlayerSettings.Nintendo3DS.Region">
-      <summary>
-        <para>Nintendo 3DS Title region.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.Region.All">
-      <summary>
-        <para>For all regions.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.Region.America">
-      <summary>
-        <para>For the American region.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.Region.China">
-      <summary>
-        <para>For the Chinese region.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.Region.Europe">
-      <summary>
-        <para>For the European region.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.Region.Japan">
-      <summary>
-        <para>For the Japanese region.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.Region.Korea">
-      <summary>
-        <para>For the Korean region.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.Region.Taiwan">
-      <summary>
-        <para>For the Taiwanese region.</para>
-      </summary>
-    </member>
-    <member name="T:UnityEditor.PlayerSettings.Nintendo3DS.TargetPlatform">
-      <summary>
-        <para>Nintendo 3DS target platform.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.TargetPlatform.NewNintendo3DS">
-      <summary>
-        <para>Target the New Nintendo 3DS platform.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.PlayerSettings.Nintendo3DS.TargetPlatform.Nintendo3DS">
-      <summary>
-        <para>Target the Nintendo 3DS platform.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.PlayerSettings.PS3">
@@ -17159,6 +17362,14 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
       <param name="targetGroup"></param>
       <param name="defines"></param>
     </member>
+    <member name="M:UnityEditor.PlayerSettings.SetStackTraceLogType(UnityEngine.LogType,UnityEngine.StackTraceLogType)">
+      <summary>
+        <para>Set stack trace logging options. 
+Note: calling this function will implicitly call Application.SetStackTraceLogType.</para>
+      </summary>
+      <param name="logType"></param>
+      <param name="stackTraceType"></param>
+    </member>
     <member name="M:UnityEditor.PlayerSettings.SetUseDefaultGraphicsAPIs(UnityEditor.BuildTarget,System.Boolean)">
       <summary>
         <para>Should a build platform use automatic graphics API choice.</para>
@@ -17169,6 +17380,12 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
     <member name="T:UnityEditor.PlayerSettings.Tizen">
       <summary>
         <para>Tizen specific player settings.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.Tizen.minOSVersion">
+      <summary>
+        <para>Minimum Tizen OS version that this application is compatible with. 
+        IMPORTANT: For example: if you choose Tizen 2.4 your application will only run on devices with Tizen 2.4 or later.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.PlayerSettings.Tizen.productDescription">
@@ -17431,6 +17648,198 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
         <para>Deployment minimal version of tvOS.</para>
       </summary>
     </member>
+    <member name="T:UnityEditor.PlayerSettings.WiiU">
+      <summary>
+        <para>Wii U specific player settings.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.accountBossSize">
+      <summary>
+        <para>Account's size in kiB for BOSS.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.accountSaveSize">
+      <summary>
+        <para>Account's size in kiB for SAVE.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.addOnUniqueIDs">
+      <summary>
+        <para>Unique IDs of Add-ons.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.allowScreenCapture">
+      <summary>
+        <para>Allow screen capture during gameplay.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.commonBossSize">
+      <summary>
+        <para>Common account's size in kiB for BOSS.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.commonSaveSize">
+      <summary>
+        <para>Common account's size in kiB for SAVE.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.controllerCount">
+      <summary>
+        <para>Max number of supported Wii controllers.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.gamePadMSAA">
+      <summary>
+        <para>GamePad's MSAA quality.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.gamePadStartupScreen">
+      <summary>
+        <para>Image displayed on GamePad during startup.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.groupID">
+      <summary>
+        <para>Group ID.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.joinGameId">
+      <summary>
+        <para>Join-in game ID (game server ID) provided by Nintendo.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.joinGameModeMask">
+      <summary>
+        <para>Join-in game mode mask.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.loaderThreadStackSize">
+      <summary>
+        <para>Stack size for the loader thread in kilobytes.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.mainThreadStackSize">
+      <summary>
+        <para>Stack size for the main thread in kilobytes.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.olvAccessKey">
+      <summary>
+        <para>OLV access key provided by Nintendo.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.profilerLibraryPath">
+      <summary>
+        <para>Path to CPU profiler library that should be passed to linker.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.supportsBalanceBoard">
+      <summary>
+        <para>Is Balance Board is supported?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.supportsClassicController">
+      <summary>
+        <para>Is Classic Controller supported?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.supportsMotionPlus">
+      <summary>
+        <para>Is Motion Plus extension controller supported?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.supportsNunchuk">
+      <summary>
+        <para>Is Nunchuk extension supported?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.supportsProController">
+      <summary>
+        <para>Is Pro Controller supported?</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.systemHeapSize">
+      <summary>
+        <para>System heap size in kilobytes.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.tinCode">
+      <summary>
+        <para>TIN (Title Identification Number) provided by Nintendo.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.titleID">
+      <summary>
+        <para>Title ID.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.tvResolution">
+      <summary>
+        <para>TV resolution.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WiiU.tvStartupScreen">
+      <summary>
+        <para>Image displayed on TV during startup.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.PlayerSettings.WSA">
+      <summary>
+        <para>Windows Store Apps specific player settings.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WSA.compilationOverrides">
+      <summary>
+        <para>Specify how to compile C# files when building to Windows Store Apps.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WSA.enableIndependentInputSource">
+      <summary>
+        <para>Enable/Disable independent input source feature.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WSA.enableLowLatencyPresentationAPI">
+      <summary>
+        <para>Enable/Disable low latency presentation API.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.PlayerSettings.WSA.Declarations">
+      <summary>
+        <para>Windows Store Apps declarations.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WSA.Declarations.fileTypeAssociations">
+      <summary>
+        <para>Set information for file type associations.
+
+For more information - https:msdn.microsoft.comlibrarywindowsappshh779671https:msdn.microsoft.comlibrarywindowsappshh779671.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.WSA.Declarations.protocolName">
+      <summary>
+        <para>
+          Registers this application to be a default handler for specified URI scheme name.
+
+          For example: if you specify myunitygame, your application can be run from other applications via the URI scheme myunitygame:. You can also test this using the Windows "Run" dialog box (invoked with Windows + R key).
+          
+          For more information https:msdn.microsoft.comlibrarywindowsappshh779670https:msdn.microsoft.comlibrarywindowsappshh779670.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.PlayerSettings.WSA.GetVisualAssetsImage(UnityEditor.PlayerSettings/WSAImageType,UnityEditor.PlayerSettings/WSAImageScale)">
+      <summary>
+        <para>Get path for image, that will be populated to the Visual Studio solution and the package manifest.</para>
+      </summary>
+      <param name="type"></param>
+      <param name="scale"></param>
+    </member>
+    <member name="M:UnityEditor.PlayerSettings.WSA.SetVisualAssetsImage(System.String,UnityEditor.PlayerSettings/WSAImageType,UnityEditor.PlayerSettings/WSAImageScale)">
+      <summary>
+        <para>Set path for image, that will be populated to the Visual Studio solution and the package manifest.</para>
+      </summary>
+      <param name="image"></param>
+      <param name="type"></param>
+      <param name="scale"></param>
+    </member>
     <member name="T:UnityEditor.PlayerSettings.WSACompilationOverrides">
       <summary>
         <para>Compilation overrides for C# files.</para>
@@ -17451,6 +17860,21 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
         <para>C# files not located in Plugins, Standard Assets, Pro Standard Assets folders are compiled using Microsoft compiler and .NET Core, all other C# files are compiled using Mono compiler. The advantage is that classes implemented in C# are accessible from JS and Boo languages.</para>
       </summary>
     </member>
+    <member name="T:UnityEditor.PlayerSettings.WSAFileTypeAssociations">
+      <summary>
+        <para>Describes File Type Association declaration.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.PlayerSettings.WSAFileTypeAssociations.name">
+      <summary>
+        <para>Localizable string that will be displayed to the user as associated file handler.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.PlayerSettings.WSAFileTypeAssociations.supportedFileTypes">
+      <summary>
+        <para>Supported file types for this association.</para>
+      </summary>
+    </member>
     <member name="T:UnityEditor.PlayerSettings.WSAImageScale">
       <summary>
         <para>Various image scales, supported by Windows Store Apps.</para>
@@ -17461,190 +17885,19 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
         <para>Image types, supported by Windows Store Apps.</para>
       </summary>
     </member>
-    <member name="T:UnityEditor.PlayerSettings.XboxOne">
+    <member name="T:UnityEditor.PlayerSettings.WSASupportedFileType">
       <summary>
-        <para>Xbox One Specific Player Settings.</para>
+        <para>Describes supported file type for File Type Association declaration.</para>
       </summary>
     </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.AddAllowedProductId(System.String)">
+    <member name="F:UnityEditor.PlayerSettings.WSASupportedFileType.contentType">
       <summary>
-        <para>Add a ProductId to the list of products that can load the content package created from your project.  This setting is only available for content packages.</para>
-      </summary>
-      <param name="id"></param>
-      <returns>
-        <para>Returns false if the product Id was already in the allowed list.</para>
-      </returns>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.AllowedProductIds">
-      <summary>
-        <para>Get the list of projects that can load this content package.  This setting is only available for content packages.</para>
+        <para>The 'Content Type' value for the file type's MIME content type. For example: 'image/jpeg'. Can also be left blank.</para>
       </summary>
     </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.AppManifestOverridePath">
+    <member name="F:UnityEditor.PlayerSettings.WSASupportedFileType.fileType">
       <summary>
-        <para>Xbox One optional parameter that lets you use a specified Manifest file rather than generated for you.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.ContentId">
-      <summary>
-        <para>Xbox One Content ID to be used in constructing game package.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.Description">
-      <summary>
-        <para>A friendly description that can be displayed to users.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.DisableKinectGpuReservation">
-      <summary>
-        <para>Disabling the kinect frees up additional GPU resources for use.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.EnablePIXSampling">
-      <summary>
-        <para>Enable sampling profiler in development builds to provide better profile markers for PIX, including Start and Update markers for script behaviors.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.EnableVariableGPU">
-      <summary>
-        <para>Turns on notifications that you are gaining/losing GPU resources.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.GameOsOverridePath">
-      <summary>
-        <para>(optional override) Location of Xbox One Game OS image file to link into ERA package being created.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.GetCapability(System.String)">
-      <summary>
-        <para>Returns a bool indicating if the given capability is enabled or not.  Please see the XDK whitepaper titled "Xbox One Submission Validator" for valid capability names.</para>
-      </summary>
-      <param name="capability"></param>
-    </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.GetGameRating(System.String)">
-      <summary>
-        <para>Get the rating value that is specified in the appxmanifest.xml file for the given ratings board.</para>
-      </summary>
-      <param name="name">The name of the ratings board that you want the rating value for.</param>
-      <returns>
-        <para>The current rating level.  The meaning of the value depends on the name of the ratings board.  The value corresponds to the entries the rating board's drop down menu, top most entry being 0 and each item lower in the list being 1 higher than the previous.</para>
-      </returns>
-    </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.GetSocketDefinition(System.String,System.String&amp;,System.Int32&amp;,System.Int32[]&amp;,System.String&amp;,System.Int32&amp;,System.Int32[]&amp;)">
-      <summary>
-        <para>Get the values for the socket description with the given name.</para>
-      </summary>
-      <param name="name">The name of the socket description.</param>
-      <param name="port">The port or port range the socket can use.</param>
-      <param name="protocol">The protocol the socket uses.</param>
-      <param name="usages">The allowed usage flags for this socket description.</param>
-      <param name="templateName">The name of the device association template.</param>
-      <param name="sessionRequirment">Mutiplayer requirement setting for the device association template.</param>
-      <param name="deviceUsages">The allowed usage flags for the device association template.</param>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.IsContentPackage">
-      <summary>
-        <para>Indicates if the game is a standalone game or a content package to an existing game.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.PackageUpdateGranularity">
-      <summary>
-        <para>The update granularity the package will be built with.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.PackagingEncryption">
-      <summary>
-        <para>Xbox One optional parameter that causes the makepkg process to encrypt the package for performance testing or with final retail encryption.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.PackagingOverridePath">
-      <summary>
-        <para>Xbox One optional parameter that causes the makepkg process to use your specified layout file rather than generating one for you. Required if working with asset bundles.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.PersistentLocalStorageSize">
-      <summary>
-        <para>Sets the size of the persistent local storage.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.ProductId">
-      <summary>
-        <para>Xbox One Product ID to use when building a streaming install package.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.RemoveAllowedProductId(System.String)">
-      <summary>
-        <para>Remove a ProductId from the list of products that can load the content package created from your project.  This setting is only available for content packages.</para>
-      </summary>
-      <param name="id"></param>
-    </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.RemoveSocketDefinition(System.String)">
-      <summary>
-        <para>Remove the socket description with the given name.</para>
-      </summary>
-      <param name="name"></param>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.SandboxId">
-      <summary>
-        <para>Xbox One makepkg option. Specifies the Sandbox ID to be used when building a streaming install package.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.SCID">
-      <summary>
-        <para>The service configuration ID for your title.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.SetCapability(System.String,System.Boolean)">
-      <summary>
-        <para>Mark a specific capability as enabled or enabled in the appxmanifest.xml file.  Please see the XDK whitepaper titled "Xbox One Submission Validator" for valid capability names.</para>
-      </summary>
-      <param name="capability">The name of the capability to set.</param>
-      <param name="value">Whether or not to enable the capability.</param>
-    </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.SetGameRating(System.String,System.Int32)">
-      <summary>
-        <para>Set the rating value that is specified in the appxmanifest.xml file.</para>
-      </summary>
-      <param name="name">The name of the ratings board that you are setting the rating value for.</param>
-      <param name="value">The new rating level.  The meaning of the value depends on the name of the ratings board.  The value corresponds to the entries the rating board's drop down menu, top most entry being 0 and each item lower in the list being 1 higher than the previous.</param>
-    </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.SetSocketDefinition(System.String,System.String,System.Int32,System.Int32[],System.String,System.Int32,System.Int32[])">
-      <summary>
-        <para>Set the values for the socket description with the given name.</para>
-      </summary>
-      <param name="name">The name of the socket description.</param>
-      <param name="port">The port or port range the socket can use.</param>
-      <param name="protocol">The protocol the socket uses.</param>
-      <param name="usages">The allowed usage flags for this socket description.</param>
-      <param name="templateName">The name of the device association template.</param>
-      <param name="sessionRequirment">Mutiplayer requirement setting for the device association template.</param>
-      <param name="deviceUsages">The allowed usage flags for the device association template.</param>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.SocketNames">
-      <summary>
-        <para>Get the names of the socket descriptions for the project.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.TitleId">
-      <summary>
-        <para>The TitleID uniquely identifying your title to Xbox Live services.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEditor.PlayerSettings.XboxOne.UpdateAllowedProductId(System.Int32,System.String)">
-      <summary>
-        <para>Update the value at the given index in the list of products that can load this content package.  You can use the PlayerSettings.XboxOne.AllowedProductIds property to get the existing productIds and determine their indexes.</para>
-      </summary>
-      <param name="idx"></param>
-      <param name="id"></param>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.UpdateKey">
-      <summary>
-        <para>Xbox One makepkg.exe option. Specifies the update key required when building game updates.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.XboxOne.Version">
-      <summary>
-        <para>Xbox One Version Identifier used in the Application Manifest.</para>
+        <para>File type extension. For ex., .myUnityGame</para>
       </summary>
     </member>
     <member name="T:UnityEditor.PluginImporter">
@@ -17828,7 +18081,7 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
     </member>
     <member name="T:UnityEditor.PrefabType">
       <summary>
-        <para>The type of a prefab object as returned by EditorUtility.GetPrefabType.</para>
+        <para>The type of a prefab object as returned by PrefabUtility.GetPrefabType.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.PrefabType.DisconnectedModelPrefabInstance">
@@ -17920,19 +18173,29 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
       <summary>
         <para>Helper function to find the prefab root of an object (used for picking niceness).</para>
       </summary>
-      <param name="source"></param>
+      <param name="source">The object to check.</param>
+      <returns>
+        <para>The prefab root.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.PrefabUtility.FindRootGameObjectWithSameParentPrefab(UnityEngine.GameObject)">
       <summary>
         <para>Returns the topmost game object that has the same prefab parent as target.</para>
       </summary>
+      <param name="destinationScene">Scene to instantiate the prefab in.</param>
       <param name="target"></param>
+      <returns>
+        <para>The GameObject at the root of the prefab.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.PrefabUtility.FindValidUploadPrefabInstanceRoot(UnityEngine.GameObject)">
       <summary>
         <para>Returns root game object of the prefab instance if that root prefab instance is a parent of the prefab.</para>
       </summary>
-      <param name="target"></param>
+      <param name="target">GameObject to process.</param>
+      <returns>
+        <para>Return the root game object of the prefab asset.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.PrefabUtility.GetPrefabObject(UnityEngine.Object)">
       <summary>
@@ -18009,7 +18272,7 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
       <summary>
         <para>Force record property modifications by comparing against the parent prefab.</para>
       </summary>
-      <param name="targetObject"></param>
+      <param name="targetObject">Object to process</param>
     </member>
     <member name="M:UnityEditor.PrefabUtility.ReplacePrefab(UnityEngine.GameObject,UnityEngine.Object)">
       <summary>
@@ -18160,6 +18423,71 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
         <para>The asset should be moved to trash.</para>
       </summary>
     </member>
+    <member name="T:UnityEditor.Rendering.EditorGraphicsSettings">
+      <summary>
+        <para>Editor-specific script interface for.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.Rendering.EditorGraphicsSettings.GetShaderSettingsForPlatform(UnityEditor.BuildTargetGroup,UnityEngine.Rendering.ShaderHardwareTier)">
+      <summary>
+        <para>Will return PlatformShaderSettings for given platform and shader hardware tier.</para>
+      </summary>
+      <param name="target"></param>
+      <param name="tier"></param>
+    </member>
+    <member name="M:UnityEditor.Rendering.EditorGraphicsSettings.SetShaderSettingsForPlatform(UnityEditor.BuildTargetGroup,UnityEngine.Rendering.ShaderHardwareTier,UnityEditor.Rendering.PlatformShaderSettings)">
+      <summary>
+        <para>Allows you to set the PlatformShaderSettings for the specified platform and shader hardware tier.</para>
+      </summary>
+      <param name="target"></param>
+      <param name="tier"></param>
+      <param name="settings"></param>
+    </member>
+    <member name="T:UnityEditor.Rendering.PlatformShaderSettings">
+      <summary>
+        <para>Used to set up shader settings, per-platorm and per-shader-hardware-tier.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.Rendering.PlatformShaderSettings.cascadedShadowMaps">
+      <summary>
+        <para>Allows you to specify whether cascaded shadow maps should be used.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.Rendering.PlatformShaderSettings.reflectionProbeBlending">
+      <summary>
+        <para>Allows you to specify whether Reflection Probes Blending should be enabled.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.Rendering.PlatformShaderSettings.reflectionProbeBoxProjection">
+      <summary>
+        <para>Allows you to specify whether Reflection Probes Box Projection should be used.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.Rendering.PlatformShaderSettings.standardShaderQuality">
+      <summary>
+        <para>Allows you to select Standard Shader Quality.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.Rendering.ShaderQuality">
+      <summary>
+        <para>Shader quality preset.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.Rendering.ShaderQuality.High">
+      <summary>
+        <para>High quality shader preset.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.Rendering.ShaderQuality.Low">
+      <summary>
+        <para>Low quality shader preset.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.Rendering.ShaderQuality.Medium">
+      <summary>
+        <para>Medium quality shader preset.</para>
+      </summary>
+    </member>
     <member name="T:UnityEditor.ReplacePrefabOptions">
       <summary>
         <para>Flags for the PrefabUtility.ReplacePrefab function.</para>
@@ -18240,6 +18568,11 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
         <para>The number of loaded scenes.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.SceneManagement.EditorSceneManager.preventCrossSceneReferences">
+      <summary>
+        <para>Preventing cross-scene references from the editor UI.</para>
+      </summary>
+    </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.CloseScene(UnityEngine.SceneManagement.Scene,System.Boolean)">
       <summary>
         <para>Close the scene. If removeScene flag is true, the closed scene will also be removed from EditorSceneManager.</para>
@@ -18248,6 +18581,15 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
       <param name="removeScene">Bool flag to indicate if the scene should be removed after closing.</param>
       <returns>
         <para>Returns true if the scene is closed/removed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.SceneManagement.EditorSceneManager.DetectCrossSceneReferences(UnityEngine.SceneManagement.Scene)">
+      <summary>
+        <para>Detects cross scene references in a Scene.</para>
+      </summary>
+      <param name="scene">Scene to check for cross scene references.</param>
+      <returns>
+        <para>Was any cross scene references found.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.GetSceneManagerSetup">
@@ -18307,7 +18649,7 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.SaveModifiedScenesIfUserWantsTo(UnityEngine.SceneManagement.Scene[])">
       <summary>
-        <para>Ask the user if he wants to save any of the modfied input scenes.</para>
+        <para>Ask the user if they want to save any of the modfied input scenes.</para>
       </summary>
       <param name="scenes">Scenes that should be saved if they are modified.</param>
     </member>
@@ -19208,10 +19550,13 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
     </member>
     <member name="M:UnityEditor.ShaderUtil.GetTexDim(UnityEngine.Shader,System.Int32)">
       <summary>
-        <para>Gets the ShaderPropertyTexDim of the texture at property index propertyIdx of Shader s.</para>
+        <para>Gets texture dimension of a shader property.</para>
       </summary>
-      <param name="s">The shader to check against.</param>
+      <param name="s">The shader to get the property from.</param>
       <param name="propertyIdx">The property index to use.</param>
+      <returns>
+        <para>Texture dimension.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.ShaderUtil.IsShaderPropertyHidden(UnityEngine.Shader,System.Int32)">
       <summary>
@@ -19219,41 +19564,6 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
       </summary>
       <param name="s">The shader to check against.</param>
       <param name="propertyIdx">The property index to use.</param>
-    </member>
-    <member name="T:UnityEditor.ShaderUtil.ShaderPropertyTexDim">
-      <summary>
-        <para>Representation of the texture dimensions.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.ShaderUtil.ShaderPropertyTexDim.TexDim2D">
-      <summary>
-        <para>2D Texture.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.ShaderUtil.ShaderPropertyTexDim.TexDim3D">
-      <summary>
-        <para>3D Texture.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.ShaderUtil.ShaderPropertyTexDim.TexDimAny">
-      <summary>
-        <para>Any texture dimension (catch all).</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.ShaderUtil.ShaderPropertyTexDim.TexDimCUBE">
-      <summary>
-        <para>Texure Cube (Cubemap).</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.ShaderUtil.ShaderPropertyTexDim.TexDimRECT">
-      <summary>
-        <para>Texture Rect.</para>
-      </summary>
-    </member>
-    <member name="F:UnityEditor.ShaderUtil.ShaderPropertyTexDim.TexDimUnknown">
-      <summary>
-        <para>Unknown Texture dimension.</para>
-      </summary>
     </member>
     <member name="T:UnityEditor.ShaderUtil.ShaderPropertyType">
       <summary>
@@ -19504,6 +19814,21 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
     <member name="P:UnityEditor.SpeedTreeImporter.LODHeights">
       <summary>
         <para>Gets and sets an array of floats of each LOD's screen height value.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.SplashScreenStyle">
+      <summary>
+        <para>The style of builtin splash screen to use.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.SplashScreenStyle.Dark">
+      <summary>
+        <para>Dark background with light logo and text.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.SplashScreenStyle.Light">
+      <summary>
+        <para>White background with dark logo and text.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.SpriteImportMode">
@@ -20087,11 +20412,11 @@ Values match the ProceduralMaterial::ProceduralLoadingBehavior enum.</param>
       <param name="material"></param>
       <param name="scale"></param>
     </member>
-    <member name="M:UnityEditor.SubstanceImporter.SetPlatformTextureSettings">
+    <member name="M:UnityEditor.SubstanceImporter.SetPlatformTextureSettings(UnityEngine.ProceduralMaterial,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
       <summary>
-        <para>Set the import settings for the input ProceduralMaterial for the input platform (width and height, RAW/Compressed format, loading behavior).</para>
+        <para>Set the import settings for the input ProceduralMaterial for the input platform.</para>
       </summary>
-      <param name="materialName">The name of the Procedural Material.</param>
+      <param name="material">The name of the Procedural Material.</param>
       <param name="platform">The name of the platform (can be empty).</param>
       <param name="maxTextureWidth">The maximum texture width for this Procedural Material.</param>
       <param name="maxTextureHeight">The maximum texture height for this Procedural Material.</param>
@@ -20382,7 +20707,7 @@ Values match the ProceduralMaterial::ProceduralLoadingBehavior enum.</param>
       <param name="platform">The platforms whose settings are to be changed (see below).</param>
       <param name="maxTextureSize">Maximum texture width/height in pixels.</param>
       <param name="textureFormat">Data format for the texture.</param>
-      <param name="compressionQuality">Value from 0..100, equivalent to the standard JPEG quality setting.</param>
+      <param name="compressionQuality">Value from 0..100, with 0, 50 and 100 being respectively Fast, Normal, Best quality options in the texture importer UI. For Crunch texture formats, this roughly corresponds to JPEG quality levels.</param>
       <param name="allowsAlphaSplit">Allows splitting of imported texture into RGB+A so that ETC1 compression can be applied (Android only, and works only on textures that are a part of some atlas).</param>
     </member>
     <member name="M:UnityEditor.TextureImporter.SetPlatformTextureSettings(System.String,System.Int32,UnityEditor.TextureImporterFormat,System.Int32,System.Boolean)">
@@ -20392,7 +20717,7 @@ Values match the ProceduralMaterial::ProceduralLoadingBehavior enum.</param>
       <param name="platform">The platforms whose settings are to be changed (see below).</param>
       <param name="maxTextureSize">Maximum texture width/height in pixels.</param>
       <param name="textureFormat">Data format for the texture.</param>
-      <param name="compressionQuality">Value from 0..100, equivalent to the standard JPEG quality setting.</param>
+      <param name="compressionQuality">Value from 0..100, with 0, 50 and 100 being respectively Fast, Normal, Best quality options in the texture importer UI. For Crunch texture formats, this roughly corresponds to JPEG quality levels.</param>
       <param name="allowsAlphaSplit">Allows splitting of imported texture into RGB+A so that ETC1 compression can be applied (Android only, and works only on textures that are a part of some atlas).</param>
     </member>
     <member name="M:UnityEditor.TextureImporter.SetTextureSettings(UnityEditor.TextureImporterSettings)">
@@ -20806,6 +21131,12 @@ Values match the ProceduralMaterial::ProceduralLoadingBehavior enum.</param>
         <para>Scale factor between pixels in the sprite graphic and world space units.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.TextureImporterSettings.spriteTessellationDetail">
+      <summary>
+        <para>The tessellation detail to be used for generating the mesh for the associated sprite if the SpriteMode is set to Single. For Multiple sprites, use the SpriteEditor to specify the value per sprite.
+Valid values are in the range [0-1], with higher values generating a tighter mesh. A default of -1 will allow Unity to determine the value automatically.</para>
+      </summary>
+    </member>
     <member name="M:UnityEditor.TextureImporterSettings.ApplyTextureType(UnityEditor.TextureImporterType,System.Boolean)">
       <summary>
         <para>Configure parameters to import a texture for a purpose of type, as described TextureImporterType|here.</para>
@@ -20874,6 +21205,21 @@ Values match the ProceduralMaterial::ProceduralLoadingBehavior enum.</param>
     <member name="F:UnityEditor.TextureImporterType.Sprite">
       <summary>
         <para>Select this if you will be using your texture for Sprite graphics.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.TizenOSVersion">
+      <summary>
+        <para>Tizen OS compatibility.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.TizenOSVersion.Version23">
+      <summary>
+        <para></para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.TizenOSVersion.Version24">
+      <summary>
+        <para></para>
       </summary>
     </member>
     <member name="T:UnityEditor.Tool">
@@ -21210,8 +21556,8 @@ It is required that the GameObject is at the root of its current scene.</para>
       <summary>
         <para>Records any changes done on the object after the RecordObject function.</para>
       </summary>
-      <param name="objectToUndo"></param>
-      <param name="name"></param>
+      <param name="objectToUndo">The reference to the object that you will be modifying.</param>
+      <param name="name">The title of the action to appear in the undo history (i.e. visible in the undo menu).</param>
     </member>
     <member name="M:UnityEditor.Undo.RecordObjects(UnityEngine.Object[],System.String)">
       <summary>
@@ -21332,16 +21678,22 @@ It is required that the GameObject is at the root of its current scene.</para>
     </member>
     <member name="M:UnityEditor.Unwrapping.GeneratePerTriangleUV(UnityEngine.Mesh)">
       <summary>
-        <para>Will generate per-triangle uv (3 uv pairs for each triangle) with default settings.</para>
+        <para>Will generate per-triangle uv (3 UVs for each triangle) with default settings.</para>
       </summary>
-      <param name="src"></param>
+      <param name="src">The source mesh to generate UVs for.</param>
+      <returns>
+        <para>The list of UVs generated.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.Unwrapping.GeneratePerTriangleUV(UnityEngine.Mesh,UnityEditor.UnwrapParam)">
       <summary>
-        <para>Will generate per-triangle uv (3 uv pairs for each triangle) with provided settings.</para>
+        <para>Will generate per-triangle uv (3 UVs for each triangle) with provided settings.</para>
       </summary>
-      <param name="src"></param>
-      <param name="settings"></param>
+      <param name="src">The source mesh to generate UVs for.</param>
+      <param name="settings">Allows you to specify custom parameters to control the unwrapping.</param>
+      <returns>
+        <para>The list of UVs generated.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.Unwrapping.GenerateSecondaryUVSet(UnityEngine.Mesh)">
       <summary>
