@@ -66,8 +66,5 @@
     <Compile Include="Assets\Eazy Tools\Sound Manager\Demo\EazySoundManagerDemo.cs" />
     <Compile Include="Assets\Eazy Tools\Sound Manager\Scripts\SoundManager.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\DocuMaker\readme.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

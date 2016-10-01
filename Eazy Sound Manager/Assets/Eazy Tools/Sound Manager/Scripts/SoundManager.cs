@@ -804,13 +804,13 @@ namespace EazyTools.SoundManager
             tempFadeSeconds = fadeSeconds;
         }
 
-		/// <summary>
-		/// Sets the audio volume
-		/// </summary>
-		/// <param name="volume">The target volume</param>
-		/// <param name="fadeSeconds">How many seconds it needs for the audio to fade in/out to reach target volume. If passed, it will override the Audio's fade in/out seconds, but only for this transition</param>
-		/// <param name="startVolume">Immediately set the volume to this value before beginning the fade</param>
-		public void SetVolume(float volume, float fadeSeconds, float startVolume) 
+        /// <summary>
+        /// Sets the audio volume
+        /// </summary>
+        /// <param name="volume">The target volume</param>
+        /// <param name="fadeSeconds">How many seconds it needs for the audio to fade in/out to reach target volume. If passed, it will override the Audio's fade in/out seconds, but only for this transition</param>
+        /// <param name="startVolume">Immediately set the volume to this value before beginning the fade. If not passed, the Audio will start fading from the current volume towards the target volume</param>
+        public void SetVolume(float volume, float fadeSeconds, float startVolume) 
 		{
 			targetVolume = Mathf.Clamp01(volume);
 			fadeInterpolater = 0;
