@@ -27,12 +27,23 @@ namespace EazyTools.SoundManager
                     _instance = (SoundManager)FindObjectOfType(typeof(SoundManager));
                     if (_instance == null)
                     {
+                        // Create gameObject and add component
                         _instance = (new GameObject("EazySoundManager")).AddComponent<SoundManager>();
                     }
                 }
                 return _instance;
             }
         }
+
+        /// <summary>
+        /// The gameobject that the sound manager is attached to
+        /// </summary>
+        public static GameObject gameobject { get { return instance.gameObject; } }
+
+        /// <summary>
+        /// When set to true, new Audios that have the same audio clip as any other Audio, will be ignored
+        /// </summary>
+        public static bool ignoreDuplicateMusic { get; set; }
 
         /// <summary>
         /// Global volume
@@ -192,8 +203,9 @@ namespace EazyTools.SoundManager
                 soundsAudio = new Dictionary<int, Audio>();
                 UISoundsAudio = new Dictionary<int, Audio>();
 
-                initialized = true;
+                ignoreDuplicateMusic = false;
 
+                initialized = true;
                 DontDestroyOnLoad(this);
             }
         }
@@ -368,7 +380,7 @@ namespace EazyTools.SoundManager
         /// <param name="persist"> Whether the audio persists in between scene changes</param>
         /// <param name="fadeInValue">How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)</param>
         /// <param name="fadeOutValue"> How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)</param>
-        /// <param name="currentMusicfadeOutSeconds"> How many seconds it needs for all music audio to fade out. It will override  their own fade out seconds. If -1 is passed, all music will keep their own fade out seconds</param>
+        /// <param name="currentMusicfadeOutSeconds"> How many seconds it needs for current music audio to fade out. It will override its own fade out seconds. If -1 is passed, current music will keep its own fade out seconds</param>
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds)
         {
@@ -377,14 +389,26 @@ namespace EazyTools.SoundManager
                 Debug.LogError("Sound Manager: Audio clip is null, cannot play music", clip);
             }
 
+            if(ignoreDuplicateMusic)
+            {
+                List<int> keys = new List<int>(musicAudio.Keys);
+                foreach (int key in keys)
+                {
+                    if (musicAudio[key].audioSource.clip == clip)
+                    {
+                        return musicAudio[key].audioID;
+                    }
+                }
+            }
+
             instance.Init();
 
             // Stop all current music playing
             StopAllMusic(currentMusicfadeOutSeconds);
 
             // Create the audioSource
-            AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
-            Audio audio = new Audio(Audio.AudioType.Music, audioSource, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds);
+            //AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
+            Audio audio = new Audio(Audio.AudioType.Music, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds);
 
             // Add it to music list
             musicAudio.Add(audio.audioID, audio);
@@ -419,7 +443,7 @@ namespace EazyTools.SoundManager
 
             // Create the audioSource
             AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
-            Audio audio = new Audio(Audio.AudioType.Sound, audioSource, clip, false, false, volume, 0f, 0f);
+            Audio audio = new Audio(Audio.AudioType.Sound, clip, false, false, volume, 0f, 0f);
 
             // Add it to music list
             soundsAudio.Add(audio.audioID, audio);
@@ -454,8 +478,8 @@ namespace EazyTools.SoundManager
             instance.Init();
 
             // Create the audioSource
-            AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
-            Audio audio = new Audio(Audio.AudioType.UISound, audioSource, clip, false, false, volume, 0f, 0f);
+            //AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
+            Audio audio = new Audio(Audio.AudioType.UISound, clip, false, false, volume, 0f, 0f);
 
             // Add it to music list
             UISoundsAudio.Add(audio.audioID, audio);
@@ -676,14 +700,14 @@ namespace EazyTools.SoundManager
         public bool playing { get; set; }
 
         /// <summary>
-        /// Whether the audio is stopping
-        /// </summary>
-        public bool stopping { get; private set; }
-
-        /// <summary>
         /// Whether the audio is paused
         /// </summary>
         public bool paused { get; private set; }
+
+        /// <summary>
+        /// Whether the audio is stopping
+        /// </summary>
+        public bool stopping { get; private set; }
 
         /// <summary>
         /// The interpolater for fading in/out
@@ -709,8 +733,10 @@ namespace EazyTools.SoundManager
             UISound
         }
 
-        public Audio(AudioType audioType, AudioSource audioSource, AudioClip clip, bool loop, bool persist, float volume, float fadeInValue, float fadeOutValue)
+        public Audio(AudioType audioType, AudioClip clip, bool loop, bool persist, float volume, float fadeInValue, float fadeOutValue)
         {
+            CreateAudiosource();
+
             this.audioID = audioCounter;
             audioCounter++;
 
@@ -734,10 +760,15 @@ namespace EazyTools.SoundManager
             Play();
         }
 
+        void CreateAudiosource()
+        {
+            audioSource = SoundManager.gameobject.AddComponent<AudioSource>() as AudioSource;
+        }
+
         /// <summary>
-        /// Start playing audio clip
+        /// Start playing audio clip from the beggining
         /// </summary>
-        public void Play()
+        void Play()
         {
             audioSource.Play();
             playing = true;
@@ -820,6 +851,11 @@ namespace EazyTools.SoundManager
 
         public void Update()
         {
+            if(audioSource == null)
+            {
+                return;
+            }
+
             activated = true;
 
             if (volume != targetVolume)
@@ -876,4 +912,6 @@ namespace EazyTools.SoundManager
             }
         }
     }
+
+    
 }
