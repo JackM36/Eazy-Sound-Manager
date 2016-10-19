@@ -122,7 +122,7 @@ namespace EazyTools.SoundManager
                 if (!audio.persist && audio.activated)
                 {
                     Destroy(audio.audioSource);
-                    musicAudio.Remove(key);
+                    //musicAudio.Remove(key);
                 }
             }
 
@@ -159,8 +159,8 @@ namespace EazyTools.SoundManager
                 // Remove all music clips that are not playing
                 if (!audio.playing && !audio.paused)
                 {
-                    Destroy(audio.audioSource);
-                    musicAudio.Remove(key);
+                    //Destroy(audio.audioSource);
+                    //musicAudio.Remove(key);
                 }
             }
 
@@ -662,6 +662,7 @@ namespace EazyTools.SoundManager
         private static int audioCounter = 0;
         private float volume;
         private float targetVolume;
+        private float initTargetVolume;
         private float tempFadeSeconds;
 
         /// <summary>
@@ -745,6 +746,7 @@ namespace EazyTools.SoundManager
             this.loop = loop;
             this.persist = persist;
             this.targetVolume = volume;
+            this.initTargetVolume = volume;
             this.tempFadeSeconds = -1;
             this.volume = 0f;
             this.fadeInSeconds = fadeInValue;
@@ -768,12 +770,28 @@ namespace EazyTools.SoundManager
         /// <summary>
         /// Start playing audio clip from the beggining
         /// </summary>
-        void Play()
+        public void Play()
         {
+            Play(initTargetVolume);
+        }
+
+        /// <summary>
+        /// Start playing audio clip from the beggining
+        /// </summary>
+        /// <param name="volume">The target volume</param>
+        public void Play(float volume)
+        {
+            if(audioSource == null)
+            {
+                CreateAudiosource();
+            }
+
             audioSource.Play();
             playing = true;
 
-            onFadeStartVolume = volume;
+            fadeInterpolater = 0f;
+            onFadeStartVolume = this.volume;
+            targetVolume = volume;
         }
 
         /// <summary>
@@ -912,6 +930,4 @@ namespace EazyTools.SoundManager
             }
         }
     }
-
-    
 }
