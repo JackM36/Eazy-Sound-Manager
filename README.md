@@ -14,7 +14,7 @@ Moreover, Eazy Sound Manager has the option to make music persist through multip
 - Fade in and fade out transitions
 - Global volume settings
 - Music persistence across scenes
-- 2D & 3D (Spatial) sounds support
+- 2D & 3D (spatial) audio support
 
 ## Installation
 No setup is needed. Just place the SoundManager.cs script somewhere inside your assets folder, and you are ready to go.
