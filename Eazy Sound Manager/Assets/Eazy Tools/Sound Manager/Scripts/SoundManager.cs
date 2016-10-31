@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace EazyTools.SoundManager
@@ -44,6 +43,16 @@ namespace EazyTools.SoundManager
         /// When set to true, new Audios that have the same audio clip as any other Audio, will be ignored
         /// </summary>
         public static bool ignoreDuplicateMusic { get; set; }
+
+        /// <summary>
+        /// When set to true, new Audios that have the same audio clip as any other Audio, will be ignored
+        /// </summary>
+        public static bool ignoreDuplicateSounds { get; set; }
+
+        /// <summary>
+        /// When set to true, new Audios that have the same audio clip as any other Audio, will be ignored
+        /// </summary>
+        public static bool ignoreDuplicateUISounds { get; set; }
 
         /// <summary>
         /// Global volume
@@ -122,7 +131,7 @@ namespace EazyTools.SoundManager
                 if (!audio.persist && audio.activated)
                 {
                     Destroy(audio.audioSource);
-                    //musicAudio.Remove(key);
+                    musicAudio.Remove(key);
                 }
             }
 
@@ -159,7 +168,7 @@ namespace EazyTools.SoundManager
                 // Remove all music clips that are not playing
                 if (!audio.playing && !audio.paused)
                 {
-                    //Destroy(audio.audioSource);
+                    Destroy(audio.audioSource);
                     //musicAudio.Remove(key);
                 }
             }
@@ -175,7 +184,7 @@ namespace EazyTools.SoundManager
                 if (!audio.playing && !audio.paused)
                 {
                     Destroy(audio.audioSource);
-                    soundsAudio.Remove(key);
+                    //soundsAudio.Remove(key);
                 }
             }
 
@@ -190,7 +199,7 @@ namespace EazyTools.SoundManager
                 if (!audio.playing && !audio.paused)
                 {
                     Destroy(audio.audioSource);
-                    UISoundsAudio.Remove(key);
+                    //UISoundsAudio.Remove(key);
                 }
             }
         }
@@ -204,14 +213,18 @@ namespace EazyTools.SoundManager
                 UISoundsAudio = new Dictionary<int, Audio>();
 
                 ignoreDuplicateMusic = false;
+                ignoreDuplicateSounds = false;
+                ignoreDuplicateUISounds = false;
 
                 initialized = true;
                 DontDestroyOnLoad(this);
             }
         }
 
+        #region GetAudio Functions
+
         /// <summary>
-        /// Retrieves the Audio that has as its id the audioID if one is found, returns null if no such Audio is found
+        /// Returns the Audio that has as its id the audioID if one is found, returns null if no such Audio is found
         /// </summary>
         /// <param name="audioID">The id of the Audio to be retrieved</param>
         /// <returns>Audio that has as its id the audioID, null if no such Audio is found</returns>
@@ -241,6 +254,34 @@ namespace EazyTools.SoundManager
         }
 
         /// <summary>
+        /// Returns the first occurrence of Audio that plays the given audioClip. Returns null if no such Audio is found
+        /// </summary>
+        /// <param name="audioClip">The audio clip of the Audio to be retrieved</param>
+        /// <returns>First occurrence of Audio that has as plays the audioClip, null if no such Audio is found</returns>
+        public static Audio GetAudio(AudioClip audioClip)
+        {
+            Audio audio = GetMusicAudio(audioClip);
+            if (audio != null)
+            {
+                return audio;
+            }
+
+            audio = GetSoundAudio(audioClip);
+            if (audio != null)
+            {
+                return audio;
+            }
+
+            audio = GetUISoundAudio(audioClip);
+            if (audio != null)
+            {
+                return audio;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Returns the music Audio that has as its id the audioID if one is found, returns null if no such Audio is found
         /// </summary>
         /// <param name="audioID">The id of the music Audio to be returned</param>
@@ -253,6 +294,27 @@ namespace EazyTools.SoundManager
                 if (audioID == key)
                 {
                     return musicAudio[key];
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the first occurrence of music Audio that plays the given audioClip. Returns null if no such Audio is found
+        /// </summary>
+        /// <param name="audioClip">The audio clip of the music Audio to be retrieved</param>
+        /// <returns>First occurrence of music Audio that has as plays the audioClip, null if no such Audio is found</returns>
+        public static Audio GetMusicAudio(AudioClip audioClip)
+        {
+            List<int> keys;
+            keys = new List<int>(musicAudio.Keys);
+            foreach (int key in keys)
+            {
+                Audio audio = musicAudio[key];
+                if (audio.clip == audioClip)
+                {
+                    return audio;
                 }
             }
 
@@ -279,6 +341,27 @@ namespace EazyTools.SoundManager
         }
 
         /// <summary>
+        /// Returns the first occurrence of sound Audio that plays the given audioClip. Returns null if no such Audio is found
+        /// </summary>
+        /// <param name="audioClip">The audio clip of the sound Audio to be retrieved</param>
+        /// <returns>First occurrence of sound Audio that has as plays the audioClip, null if no such Audio is found</returns>
+        public static Audio GetSoundAudio(AudioClip audioClip)
+        {
+            List<int> keys;
+            keys = new List<int>(soundsAudio.Keys);
+            foreach (int key in keys)
+            {
+                Audio audio = soundsAudio[key];
+                if (audio.clip == audioClip)
+                {
+                    return audio;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Returns the UI sound fx Audio that has as its id the audioID if one is found, returns null if no such Audio is found
         /// </summary>
         /// <param name="audioID">The id of the UI sound fx Audio to be returned</param>
@@ -298,13 +381,38 @@ namespace EazyTools.SoundManager
         }
 
         /// <summary>
+        /// Returns the first occurrence of UI sound Audio that plays the given audioClip. Returns null if no such Audio is found
+        /// </summary>
+        /// <param name="audioClip">The audio clip of the UI sound Audio to be retrieved</param>
+        /// <returns>First occurrence of UI sound Audio that has as plays the audioClip, null if no such Audio is found</returns>
+        public static Audio GetUISoundAudio(AudioClip audioClip)
+        {
+            List<int> keys;
+            keys = new List<int>(UISoundsAudio.Keys);
+            foreach (int key in keys)
+            {
+                Audio audio = UISoundsAudio[key];
+                if (audio.clip == audioClip)
+                {
+                    return audio;
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region Play Functions
+
+        /// <summary>
         /// Play background music
         /// </summary>
         /// <param name="clip">The audio clip to play</param>
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip)
         {
-            return PlayMusic(clip, 1f, false, false, 1f, 1f, -1f);
+            return PlayMusic(clip, 1f, false, false, 1f, 1f, -1f, null);
         }
 
         /// <summary>
@@ -315,18 +423,7 @@ namespace EazyTools.SoundManager
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip, float volume)
         {
-            return PlayMusic(clip, volume, false, false, 1f, 1f, -1f);
-        }
-
-        /// <summary>
-        /// Play background music
-        /// </summary>
-        /// <param name="clip">The audio clip to play</param>
-        /// <param name="loop">Wether the music is looped</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PlayMusic(AudioClip clip, bool loop, bool persist)
-        {
-            return PlayMusic(clip, 1f, loop, persist, 1f, 1f, -1f);
+            return PlayMusic(clip, volume, false, false, 1f, 1f, -1f, null);
         }
 
         /// <summary>
@@ -339,21 +436,7 @@ namespace EazyTools.SoundManager
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip, float volume, bool loop, bool persist)
         {
-            return PlayMusic(clip, volume, loop, persist, 1f, 1f, -1f);
-        }
-
-        /// <summary>
-        /// Play background music
-        /// </summary>
-        /// <param name="clip">The audio clip to play</param>
-        /// <param name="loop">Wether the music is looped</param>
-        /// <param name="persist"> Whether the audio persists in between scene changes</param>
-        /// <param name="fadeInValue">How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)</param>
-        /// <param name="fadeOutValue"> How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PlayMusic(AudioClip clip, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds)
-        {
-            return PlayMusic(clip, 1f, loop, persist, fadeInSeconds, fadeOutSeconds, -1f);
+            return PlayMusic(clip, volume, loop, persist, 1f, 1f, -1f, null);
         }
 
         /// <summary>
@@ -368,7 +451,7 @@ namespace EazyTools.SoundManager
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds)
         {
-            return PlayMusic(clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, -1f);
+            return PlayMusic(clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, -1f, null);
         }
 
         /// <summary>
@@ -381,8 +464,9 @@ namespace EazyTools.SoundManager
         /// <param name="fadeInValue">How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)</param>
         /// <param name="fadeOutValue"> How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)</param>
         /// <param name="currentMusicfadeOutSeconds"> How many seconds it needs for current music audio to fade out. It will override its own fade out seconds. If -1 is passed, current music will keep its own fade out seconds</param>
+        /// <param name="sourceTransform">The transform that is the source of the music (will become 3D audio). If 3D audio is not wanted, use null</param>
         /// <returns>The ID of the created Audio object</returns>
-        public static int PlayMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds)
+        public static int PlayMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds, Transform sourceTransform)
         {
             if (clip == null)
             {
@@ -408,7 +492,7 @@ namespace EazyTools.SoundManager
 
             // Create the audioSource
             //AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
-            Audio audio = new Audio(Audio.AudioType.Music, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds);
+            Audio audio = new Audio(Audio.AudioType.Music, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds, sourceTransform);
 
             // Add it to music list
             musicAudio.Add(audio.audioID, audio);
@@ -423,7 +507,7 @@ namespace EazyTools.SoundManager
         /// <returns>The ID of the created Audio object</returns>
         public static int PlaySound(AudioClip clip)
         {
-            return PlaySound(clip, 1f);
+            return PlaySound(clip, 1f, false, null);
         }
 
         /// <summary>
@@ -434,16 +518,52 @@ namespace EazyTools.SoundManager
         /// <returns>The ID of the created Audio object</returns>
         public static int PlaySound(AudioClip clip, float volume)
         {
+            return PlaySound(clip, volume, false, null);
+        }
+
+        /// <summary>
+        /// Play a sound fx
+        /// </summary>
+        /// <param name="clip">The audio clip to play</param>
+        /// <param name="loop">Wether the sound is looped</param>
+        /// <returns>The ID of the created Audio object</returns>
+        public static int PlaySound(AudioClip clip, bool loop)
+        {
+            return PlaySound(clip, 1f, loop, null);
+        }
+
+        /// <summary>
+        /// Play a sound fx
+        /// </summary>
+        /// <param name="clip">The audio clip to play</param>
+        /// <param name="volume"> The volume the music will have</param>
+        /// <param name="loop">Wether the sound is looped</param>
+        /// <param name="sourceTransform">The transform that is the source of the sound (will become 3D audio). If 3D audio is not wanted, use null</param>
+        /// <returns>The ID of the created Audio object</returns>
+        public static int PlaySound(AudioClip clip, float volume, bool loop, Transform sourceTransform)
+        {
             if (clip == null)
             {
                 Debug.LogError("Sound Manager: Audio clip is null, cannot play music", clip);
+            }
+
+            if (ignoreDuplicateSounds)
+            {
+                List<int> keys = new List<int>(soundsAudio.Keys);
+                foreach (int key in keys)
+                {
+                    if (soundsAudio[key].audioSource.clip == clip)
+                    {
+                        return soundsAudio[key].audioID;
+                    }
+                }
             }
 
             instance.Init();
 
             // Create the audioSource
             AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
-            Audio audio = new Audio(Audio.AudioType.Sound, clip, false, false, volume, 0f, 0f);
+            Audio audio = new Audio(Audio.AudioType.Sound, clip, loop, false, volume, 0f, 0f, sourceTransform);
 
             // Add it to music list
             soundsAudio.Add(audio.audioID, audio);
@@ -455,7 +575,6 @@ namespace EazyTools.SoundManager
         /// Play a UI sound fx
         /// </summary>
         /// <param name="clip">The audio clip to play</param>
-        /// <param name="volume"> The volume the music will have</param>
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayUISound(AudioClip clip)
         {
@@ -475,17 +594,33 @@ namespace EazyTools.SoundManager
                 Debug.LogError("Sound Manager: Audio clip is null, cannot play music", clip);
             }
 
+            if (ignoreDuplicateUISounds)
+            {
+                List<int> keys = new List<int>(UISoundsAudio.Keys);
+                foreach (int key in keys)
+                {
+                    if (UISoundsAudio[key].audioSource.clip == clip)
+                    {
+                        return UISoundsAudio[key].audioID;
+                    }
+                }
+            }
+
             instance.Init();
 
             // Create the audioSource
             //AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
-            Audio audio = new Audio(Audio.AudioType.UISound, clip, false, false, volume, 0f, 0f);
+            Audio audio = new Audio(Audio.AudioType.UISound, clip, false, false, volume, 0f, 0f, null);
 
             // Add it to music list
             UISoundsAudio.Add(audio.audioID, audio);
 
             return audio.audioID;
         }
+
+        #endregion
+
+        #region Stop Functions
 
         /// <summary>
         /// Stop all audio playing
@@ -558,6 +693,10 @@ namespace EazyTools.SoundManager
             }
         }
 
+        #endregion
+
+        #region Pause Functions
+
         /// <summary>
         /// Pause all audio playing
         /// </summary>
@@ -607,6 +746,10 @@ namespace EazyTools.SoundManager
             }
         }
 
+        #endregion
+
+        #region Resume Functions
+
         /// <summary>
         /// Resume all audio playing
         /// </summary>
@@ -655,6 +798,8 @@ namespace EazyTools.SoundManager
                 audio.Resume();
             }
         }
+
+        #endregion
     }
 
     public class Audio
@@ -664,6 +809,11 @@ namespace EazyTools.SoundManager
         private float targetVolume;
         private float initTargetVolume;
         private float tempFadeSeconds;
+        private float fadeInterpolater;
+        private float onFadeStartVolume;
+        private AudioType audioType;
+        private AudioClip initClip;
+        private Transform sourceTransform;
 
         /// <summary>
         /// The ID of the Audio
@@ -674,6 +824,17 @@ namespace EazyTools.SoundManager
         /// The audio source that is responsible for this audio
         /// </summary>
         public AudioSource audioSource { get; private set; }
+
+        /// <summary>
+        /// Audio clip to play/is playing
+        /// </summary>
+        public AudioClip clip
+        {
+            get
+            {
+                return audioSource == null ? initClip : audioSource.clip;
+            }
+        }
 
         /// <summary>
         /// Whether the audio will be lopped
@@ -708,24 +869,12 @@ namespace EazyTools.SoundManager
         /// <summary>
         /// Whether the audio is stopping
         /// </summary>
-        public bool stopping { get; private set; }
-
-        /// <summary>
-        /// The interpolater for fading in/out
-        /// </summary>
-        public float fadeInterpolater { get; private set; }
-
-        /// <summary>
-        /// The volume the audio has when fade in/out starts
-        /// </summary>
-        public float onFadeStartVolume { get; private set; }
+        public bool stopping { get; private set; }        
 
         /// <summary>
         /// Whether the audio is created and updated at least once. 
         /// </summary>
-        public bool activated { get; set; }
-
-        private AudioType audioType;
+        public bool activated { get; private set; }
 
         public enum AudioType
         {
@@ -734,15 +883,22 @@ namespace EazyTools.SoundManager
             UISound
         }
 
-        public Audio(AudioType audioType, AudioClip clip, bool loop, bool persist, float volume, float fadeInValue, float fadeOutValue)
+        public Audio(AudioType audioType, AudioClip clip, bool loop, bool persist, float volume, float fadeInValue, float fadeOutValue, Transform sourceTransform)
         {
-            CreateAudiosource();
+            if (sourceTransform == null)
+            {
+                this.sourceTransform = SoundManager.gameobject.transform;
+            }
+            else
+            {
+                this.sourceTransform = sourceTransform;
+            }
 
             this.audioID = audioCounter;
             audioCounter++;
 
             this.audioType = audioType;
-            this.audioSource = audioSource;
+            this.initClip = clip;
             this.loop = loop;
             this.persist = persist;
             this.targetVolume = volume;
@@ -756,15 +912,21 @@ namespace EazyTools.SoundManager
             this.paused = false;
             this.activated = false;
 
-            audioSource.clip = clip;
-            audioSource.loop = loop;
-            audioSource.volume = 0f;
+            CreateAudiosource(clip, loop);
             Play();
         }
 
-        void CreateAudiosource()
+        void CreateAudiosource(AudioClip clip, bool loop)
         {
-            audioSource = SoundManager.gameobject.AddComponent<AudioSource>() as AudioSource;
+            audioSource = sourceTransform.gameObject.AddComponent<AudioSource>() as AudioSource;
+
+            audioSource.clip = clip;
+            audioSource.loop = loop;
+            audioSource.volume = 0f;
+            if (sourceTransform != SoundManager.gameobject.transform)
+            {
+                audioSource.spatialBlend = 1;
+            }
         }
 
         /// <summary>
@@ -783,7 +945,7 @@ namespace EazyTools.SoundManager
         {
             if(audioSource == null)
             {
-                CreateAudiosource();
+                CreateAudiosource(initClip, loop);
             }
 
             audioSource.Play();
@@ -847,10 +1009,7 @@ namespace EazyTools.SoundManager
         /// <param name="fadeSeconds">How many seconds it needs for the audio to fade in/out to reach target volume. If passed, it will override the Audio's fade in/out seconds, but only for this transition</param>
         public void SetVolume(float volume, float fadeSeconds)
         {
-            targetVolume = Mathf.Clamp01(volume);
-            fadeInterpolater = 0;
-            onFadeStartVolume = this.volume;
-            tempFadeSeconds = fadeSeconds;
+            SetVolume(volume, fadeSeconds, this.volume);
         }
 
         /// <summary>
@@ -866,6 +1025,35 @@ namespace EazyTools.SoundManager
 			onFadeStartVolume = startVolume;
 			tempFadeSeconds = fadeSeconds;
 		}
+
+        /// <summary>
+        /// Sets the Audio 3D max distance
+        /// </summary>
+        /// <param name="max">the max distance</param>
+        public void Set3DMaxDistance(float max)
+        {
+            audioSource.maxDistance = max;
+        }
+
+        /// <summary>
+        /// Sets the Audio 3D min distance
+        /// </summary>
+        /// <param name="max">the min distance</param>
+        public void Set3DMinDistance(float min)
+        {
+            audioSource.minDistance = min;
+        }
+
+        /// <summary>
+        /// Sets the Audio 3D distances
+        /// </summary>
+        /// <param name="min">the min distance</param>
+        /// <param name="max">the max distance</param>
+        public void Set3DDistances(float min, float max)
+        {
+            Set3DMinDistance(min);
+            Set3DMaxDistance(max);
+        }
 
         public void Update()
         {
