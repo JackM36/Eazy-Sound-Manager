@@ -980,6 +980,15 @@ namespace EazyTools.SoundManager
         /// <summary>
         /// Resume playing audio clip
         /// </summary>
+        public void UnPause()
+        {
+            audioSource.UnPause();
+            paused = false;
+        }
+
+        /// <summary>
+        /// Resume playing audio clip
+        /// </summary>
         public void Resume()
         {
             audioSource.UnPause();
