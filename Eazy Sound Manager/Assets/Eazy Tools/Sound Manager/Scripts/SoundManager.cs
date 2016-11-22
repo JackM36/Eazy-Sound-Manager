@@ -1076,7 +1076,7 @@ namespace EazyTools.SoundManager
             if (volume != targetVolume)
             {
                 float fadeValue;
-                fadeInterpolater += Time.deltaTime;
+                fadeInterpolater += Time.unscaledDeltaTime;
                 if (volume > targetVolume)
                 {
                     fadeValue = tempFadeSeconds != -1? tempFadeSeconds: fadeOutSeconds;
