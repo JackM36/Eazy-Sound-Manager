@@ -121,48 +121,47 @@ namespace EazyTools.SoundManager
 
         void OnLevelWasLoaded(int level)
         {
-            List<int> keys;
-
             // Stop and remove all non-persistent music audio
-            keys = new List<int>(musicAudio.Keys);
-            foreach (int key in keys)
+			var e = musicAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = musicAudio[key];
+                Audio audio = e.Current.Value;
                 if (!audio.persist && audio.activated)
                 {
                     Destroy(audio.audioSource);
-                    musicAudio.Remove(key);
+                    musicAudio.Remove(e.Current.Key);
                 }
             }
-
+            e.Dispose();
             // Stop and remove all sound fx
-            keys = new List<int>(soundsAudio.Keys);
-            foreach (int key in keys)
+            e = musicAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = soundsAudio[key];
+                Audio audio = e.Current.Value;
                 Destroy(audio.audioSource);
-                soundsAudio.Remove(key);
+                soundsAudio.Remove(e.Current.Key);
             }
+            e.Dispose();
 
             // Stop and remove all UI sound fx
-            keys = new List<int>(UISoundsAudio.Keys);
-            foreach (int key in keys)
+            e = musicAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = UISoundsAudio[key];
+                Audio audio = e.Current.Value;
                 Destroy(audio.audioSource);
-                UISoundsAudio.Remove(key);
+                UISoundsAudio.Remove(e.Current.Key);
             }
+            e.Dispose();
+
         }
 
         void Update()
         {
-            List<int> keys;
-
             // Update music
-            keys = new List<int>(musicAudio.Keys);
-            foreach (int key in keys)
+            var e = musicAudio.GetEnumerator();
+            while(e.MoveNext())
             {
-                Audio audio = musicAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Update();
 
                 // Remove all music clips that are not playing
@@ -172,12 +171,12 @@ namespace EazyTools.SoundManager
                     //musicAudio.Remove(key);
                 }
             }
-
+            e.Dispose();
             // Update sound fx
-            keys = new List<int>(soundsAudio.Keys);
-            foreach (int key in keys)
+            e = soundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = soundsAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Update();
 
                 // Remove all sound fx clips that are not playing
@@ -187,12 +186,13 @@ namespace EazyTools.SoundManager
                     //soundsAudio.Remove(key);
                 }
             }
+            e.Dispose();
 
             // Update UI sound fx
-            keys = new List<int>(UISoundsAudio.Keys);
-            foreach (int key in keys)
+            e = UISoundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = UISoundsAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Update();
 
                 // Remove all UI sound fx clips that are not playing
@@ -202,6 +202,7 @@ namespace EazyTools.SoundManager
                     //UISoundsAudio.Remove(key);
                 }
             }
+            e.Dispose();
         }
 
         void Init()
@@ -288,12 +289,12 @@ namespace EazyTools.SoundManager
         /// <returns>Music Audio that has as its id the audioID if one is found, null if no such Audio is found</returns>
         public static Audio GetMusicAudio(int audioID)
         {
-            List<int> keys = new List<int>(musicAudio.Keys);
-            foreach (int key in keys)
-            {
-                if (audioID == key)
+            var e = musicAudio.GetEnumerator();
+            while (e.MoveNext())
+            { 
+                if (audioID == e.Current.Value.audioID)
                 {
-                    return musicAudio[key];
+                    return e.Current.Value;
                 }
             }
 
@@ -307,11 +308,10 @@ namespace EazyTools.SoundManager
         /// <returns>First occurrence of music Audio that has as plays the audioClip, null if no such Audio is found</returns>
         public static Audio GetMusicAudio(AudioClip audioClip)
         {
-            List<int> keys;
-            keys = new List<int>(musicAudio.Keys);
-            foreach (int key in keys)
+            var e = musicAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = musicAudio[key];
+                Audio audio = e.Current.Value;
                 if (audio.clip == audioClip)
                 {
                     return audio;
@@ -328,12 +328,12 @@ namespace EazyTools.SoundManager
         /// <returns>Sound fx Audio that has as its id the audioID if one is found, null if no such Audio is found</returns>
         public static Audio GetSoundAudio(int audioID)
         {
-            List<int> keys = new List<int>(soundsAudio.Keys);
-            foreach (int key in keys)
+            var e = soundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                if (audioID == key)
+                if (audioID == e.Current.Value.audioID)
                 {
-                    return soundsAudio[key];
+                    return e.Current.Value;
                 }
             }
 
@@ -347,11 +347,10 @@ namespace EazyTools.SoundManager
         /// <returns>First occurrence of sound Audio that has as plays the audioClip, null if no such Audio is found</returns>
         public static Audio GetSoundAudio(AudioClip audioClip)
         {
-            List<int> keys;
-            keys = new List<int>(soundsAudio.Keys);
-            foreach (int key in keys)
+            var e = soundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = soundsAudio[key];
+                Audio audio = e.Current.Value;
                 if (audio.clip == audioClip)
                 {
                     return audio;
@@ -368,12 +367,12 @@ namespace EazyTools.SoundManager
         /// <returns>UI sound fx Audio that has as its id the audioID if one is found, null if no such Audio is found</returns>
         public static Audio GetUISoundAudio(int audioID)
         {
-            List<int> keys = new List<int>(UISoundsAudio.Keys);
-            foreach (int key in keys)
+            var e = UISoundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                if (audioID == key)
+                if (audioID == e.Current.Value.audioID)
                 {
-                    return UISoundsAudio[key];
+                    return e.Current.Value;
                 }
             }
 
@@ -387,11 +386,10 @@ namespace EazyTools.SoundManager
         /// <returns>First occurrence of UI sound Audio that has as plays the audioClip, null if no such Audio is found</returns>
         public static Audio GetUISoundAudio(AudioClip audioClip)
         {
-            List<int> keys;
-            keys = new List<int>(UISoundsAudio.Keys);
-            foreach (int key in keys)
+            var e = UISoundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = UISoundsAudio[key];
+                Audio audio = e.Current.Value;
                 if (audio.clip == audioClip)
                 {
                     return audio;
@@ -475,12 +473,12 @@ namespace EazyTools.SoundManager
 
             if(ignoreDuplicateMusic)
             {
-                List<int> keys = new List<int>(musicAudio.Keys);
-                foreach (int key in keys)
+                var k = musicAudio.GetEnumerator();
+                while (k.MoveNext())
                 {
-                    if (musicAudio[key].audioSource.clip == clip)
+                    if (k.Current.Value.audioSource.clip == clip)
                     {
-                        return musicAudio[key].audioID;
+                        return k.Current.Value.audioID;
                     }
                 }
             }
@@ -549,12 +547,12 @@ namespace EazyTools.SoundManager
 
             if (ignoreDuplicateSounds)
             {
-                List<int> keys = new List<int>(soundsAudio.Keys);
-                foreach (int key in keys)
+                var e = soundsAudio.GetEnumerator();
+                while(e.MoveNext())
                 {
-                    if (soundsAudio[key].audioSource.clip == clip)
+                    if (e.Current.Value.audioSource.clip == clip)
                     {
-                        return soundsAudio[key].audioID;
+                        return e.Current.Value.audioID;
                     }
                 }
             }
@@ -562,7 +560,7 @@ namespace EazyTools.SoundManager
             instance.Init();
 
             // Create the audioSource
-            AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
+            //AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
             Audio audio = new Audio(Audio.AudioType.Sound, clip, loop, false, volume, 0f, 0f, sourceTransform);
 
             // Add it to music list
@@ -596,12 +594,12 @@ namespace EazyTools.SoundManager
 
             if (ignoreDuplicateUISounds)
             {
-                List<int> keys = new List<int>(UISoundsAudio.Keys);
-                foreach (int key in keys)
+                var e = UISoundsAudio.GetEnumerator();
+                while (e.MoveNext())
                 {
-                    if (UISoundsAudio[key].audioSource.clip == clip)
+                    if (e.Current.Value.audioSource.clip == clip)
                     {
-                        return UISoundsAudio[key].audioID;
+                        return e.Current.Value.audioID;
                     }
                 }
             }
@@ -655,10 +653,10 @@ namespace EazyTools.SoundManager
         /// <param name="fadeOutSeconds"> How many seconds it needs for all music audio to fade out. It will override  their own fade out seconds. If -1 is passed, all music will keep their own fade out seconds</param>
         public static void StopAllMusic(float fadeOutSeconds)
         {
-            List<int> keys = new List<int>(musicAudio.Keys);
-            foreach (int key in keys)
+            var e = musicAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = musicAudio[key];
+                Audio audio = e.Current.Value;
                 if (fadeOutSeconds > 0)
                 {
                     audio.fadeOutSeconds = fadeOutSeconds;
@@ -672,10 +670,10 @@ namespace EazyTools.SoundManager
         /// </summary>
         public static void StopAllSounds()
         {
-            List<int> keys = new List<int>(soundsAudio.Keys);
-            foreach (int key in keys)
+            var e = soundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = soundsAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Stop();
             }
         }
@@ -685,10 +683,10 @@ namespace EazyTools.SoundManager
         /// </summary>
         public static void StopAllUISounds()
         {
-            List<int> keys = new List<int>(UISoundsAudio.Keys);
-            foreach (int key in keys)
+            var e = UISoundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = UISoundsAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Stop();
             }
         }
@@ -712,10 +710,10 @@ namespace EazyTools.SoundManager
         /// </summary>
         public static void PauseAllMusic()
         {
-            List<int> keys = new List<int>(musicAudio.Keys);
-            foreach (int key in keys)
+            var e = musicAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = musicAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Pause();
             }
         }
@@ -725,10 +723,10 @@ namespace EazyTools.SoundManager
         /// </summary>
         public static void PauseAllSounds()
         {
-            List<int> keys = new List<int>(soundsAudio.Keys);
-            foreach (int key in keys)
+            var e = soundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = soundsAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Pause();
             }
         }
@@ -738,10 +736,10 @@ namespace EazyTools.SoundManager
         /// </summary>
         public static void PauseAllUISounds()
         {
-            List<int> keys = new List<int>(UISoundsAudio.Keys);
-            foreach (int key in keys)
+            var e = UISoundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = UISoundsAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Pause();
             }
         }
@@ -765,10 +763,10 @@ namespace EazyTools.SoundManager
         /// </summary>
         public static void ResumeAllMusic()
         {
-            List<int> keys = new List<int>(musicAudio.Keys);
-            foreach (int key in keys)
+            var e = musicAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = musicAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Resume();
             }
         }
@@ -778,10 +776,10 @@ namespace EazyTools.SoundManager
         /// </summary>
         public static void ResumeAllSounds()
         {
-            List<int> keys = new List<int>(soundsAudio.Keys);
-            foreach (int key in keys)
+            var e = soundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = soundsAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Resume();
             }
         }
@@ -791,10 +789,10 @@ namespace EazyTools.SoundManager
         /// </summary>
         public static void ResumeAllUISounds()
         {
-            List<int> keys = new List<int>(UISoundsAudio.Keys);
-            foreach (int key in keys)
+            var e = UISoundsAudio.GetEnumerator();
+            while (e.MoveNext())
             {
-                Audio audio = UISoundsAudio[key];
+                Audio audio = e.Current.Value;
                 audio.Resume();
             }
         }
