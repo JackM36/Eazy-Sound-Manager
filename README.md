@@ -1,4 +1,4 @@
-![Eazy Sound Manager](http://i67.tinypic.com/sw7llf.png)
+![Eazy Sound Manager](http://i67.tinypic.com/2ls51s.png)
 
 **Eazy Sound Manager** is a simple **Unity3D tool** which aims to make sound and music management in games easier. Playing a single audio clip is now as easy as calling one API function. The API can handle multiple music, game and UI sound effects at the same time while still giving you the option to interrupt previous audio clips when needed. Audio clips can be one shot, or looping.
 
