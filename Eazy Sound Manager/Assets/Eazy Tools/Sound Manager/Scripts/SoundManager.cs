@@ -562,7 +562,7 @@ namespace EazyTools.SoundManager
             instance.Init();
 
             // Create the audioSource
-            AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
+            // AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
             Audio audio = new Audio(Audio.AudioType.Sound, clip, loop, false, volume, 0f, 0f, sourceTransform);
 
             // Add it to music list
