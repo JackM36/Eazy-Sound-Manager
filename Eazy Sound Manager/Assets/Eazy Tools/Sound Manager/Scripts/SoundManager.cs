@@ -119,7 +119,17 @@ namespace EazyTools.SoundManager
             instance.Init();
         }
 
-        void OnLevelWasLoaded(int level)
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             List<int> keys;
 
@@ -491,7 +501,6 @@ namespace EazyTools.SoundManager
             StopAllMusic(currentMusicfadeOutSeconds);
 
             // Create the audioSource
-            //AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
             Audio audio = new Audio(Audio.AudioType.Music, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds, sourceTransform);
 
             // Add it to music list
@@ -562,7 +571,6 @@ namespace EazyTools.SoundManager
             instance.Init();
 
             // Create the audioSource
-            // AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
             Audio audio = new Audio(Audio.AudioType.Sound, clip, loop, false, volume, 0f, 0f, sourceTransform);
 
             // Add it to music list
@@ -609,7 +617,6 @@ namespace EazyTools.SoundManager
             instance.Init();
 
             // Create the audioSource
-            //AudioSource audioSource = instance.gameObject.AddComponent<AudioSource>() as AudioSource;
             Audio audio = new Audio(Audio.AudioType.UISound, clip, false, false, volume, 0f, 0f, null);
 
             // Add it to music list
