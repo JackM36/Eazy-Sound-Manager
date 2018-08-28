@@ -114,8 +114,8 @@ namespace EazyTools.SoundManager
                 UISoundsVol = value;
             }
         }
-
-        void Awake()
+		
+		static SoundManager()
         {
             instance.Init();
         }
@@ -496,8 +496,6 @@ namespace EazyTools.SoundManager
                 }
             }
 
-            instance.Init();
-
             // Stop all current music playing
             StopAllMusic(currentMusicfadeOutSeconds);
 
@@ -569,8 +567,6 @@ namespace EazyTools.SoundManager
                 }
             }
 
-            instance.Init();
-
             // Create the audioSource
             Audio audio = new Audio(Audio.AudioType.Sound, clip, loop, false, volume, 0f, 0f, sourceTransform);
 
@@ -614,8 +610,6 @@ namespace EazyTools.SoundManager
                     }
                 }
             }
-
-            instance.Init();
 
             // Create the audioSource
             Audio audio = new Audio(Audio.AudioType.UISound, clip, false, false, volume, 0f, 0f, null);
@@ -1129,7 +1123,7 @@ namespace EazyTools.SoundManager
             }
 
             // Update playing status
-            if (audioSource.isPlaying != playing)
+            if (audioSource.isPlaying != playing && Application.isFocused)
             {
                 playing = audioSource.isPlaying;
             }
