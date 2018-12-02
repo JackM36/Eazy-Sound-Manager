@@ -5,8 +5,6 @@
 Moreover, Eazy Sound Manager has the option to make music persist through multiple scenes, as well as add fade in/out transitions. Different global settings for music, game sound effects and UI sound effects are also implemented. However, each audio has its own volume setting which is always relative to its global volume.
 
 ## Features
-- No setup needed
-- Simple API
 - Play multiple audio clips
 - Play music, game sound effects and UI sound effects
 - Play/Stop/Pause/Resume all or individual audio clips
@@ -15,20 +13,17 @@ Moreover, Eazy Sound Manager has the option to make music persist through multip
 - Global volume settings
 - Music persistence across scenes
 - 2D & 3D (spatial) audio support
+- Audio pooling
+- Runtime API (Fully documented)
+- No setup needed
+- Full C# source code
 
 ## Installation
-No setup is needed. Just place the SoundManager.cs script somewhere inside your assets folder, and you are ready to go.
-
-**DO NOT ATTACH THE SCRIPT ON ANY GAMEOBJECT**
+Download and put the Hellmade folder in your Assets folder, or download and import the unity package.
 
 ## Usage
-SoundManager.cs is a singleton class that will handle everything for you. You can play three types of audio: Music, game sound effects and UI sound effects. Each one is played using a different function call. All audio can be retrieved, stopped, paused or resumed.
-
-Read the [wiki](https://github.com/JackM36/Eazy-Sound-Manager/wiki) for more information.
-
-## Authors
-- Jack Hadjicosti (https://github.com/JackM36)
-- Andreas Andreou (https://github.com/AndAndreou)
+Read the [Getting Started Manual](http://www.hellmadegames.com/Projects/eazy-sound-manager/docs/manual/Manual.pdf) for intructions on how to setup and use Eazy Sound Manager.
+Read the [API Reference](http://www.hellmadegames.com/projects/eazy-sound-manager/docs/api-reference) for further details on using the API.
 
 ## Donate
 Eazy Sound Manager is a free asset done in my free time. However, donations helps me improve it, as well as develop and publish more projects like this.
@@ -36,4 +31,4 @@ Eazy Sound Manager is a free asset done in my free time. However, donations help
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GGTKA37Z7TBTE)
 
 ## License
-MIT License. Copyright 2016 Jack Hadjicosti.
+MIT License. Copyright 2018 Hellmade Games.
