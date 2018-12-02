@@ -19,7 +19,7 @@ Moreover, Eazy Sound Manager has the option to make music persist through multip
 - Full C# source code
 
 ## Installation
-Download and put the Hellmade folder in your Assets folder, or download and import the unity package.
+Download and put the Hellmade folder in your Assets folder, or download and import the [unity package](https://github.com/JackM36/Eazy-Sound-Manager/releases).
 
 ## Usage
 Read the [Getting Started Manual](http://www.hellmadegames.com/Projects/eazy-sound-manager/docs/manual/Manual.pdf) for intructions on how to setup and use Eazy Sound Manager.
