@@ -38,6 +38,11 @@ namespace Hellmade.Sound
         public bool Activated { get; private set; }
 
         /// <summary>
+        /// Whether the audio is currently pooled. Do not modify this value, it is specifically used by EazySoundManager.
+        /// </summary>
+        public bool Pooled { get; set; }
+
+        /// <summary>
         /// The volume of the audio. Use SetVolume to change it.
         /// </summary>
         public float Volume { get; private set; }
@@ -341,6 +346,7 @@ namespace Hellmade.Sound
             this.FadeOutSeconds = fadeOutValue;
 
             Volume = 0f;
+            Pooled = false;
 
             // Set audiosource default values
             Mute = false;
@@ -392,7 +398,7 @@ namespace Hellmade.Sound
         }
 
         /// <summary>
-        /// Start playing audio clip from the beggining
+        /// Start playing audio clip from the beginning
         /// </summary>
         public void Play()
         {
@@ -406,7 +412,7 @@ namespace Hellmade.Sound
         public void Play(float volume)
         {
             // Check if audio still exists in sound manager
-            if (EazySoundManager.GetAudio(AudioID) == null)
+            if (Pooled)
             {
                 // If not, restore it from the audioPool
                 bool restoredFromPool = EazySoundManager.RestoreAudioFromPool(Type, AudioID);
@@ -414,6 +420,8 @@ namespace Hellmade.Sound
                 {
                     return;
                 }
+
+                Pooled = true;
             }
 
             // Recreate audiosource if it does not exist

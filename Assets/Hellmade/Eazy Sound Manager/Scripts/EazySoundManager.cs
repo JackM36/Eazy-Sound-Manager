@@ -201,6 +201,7 @@ namespace Hellmade.Sound
 
                     // Add it to the audio pool in case it needs to be referenced in the future
                     audioPool.Add(key, audio);
+                    audio.Pooled = true;
                     audioDict.Remove(key);
                 }
             }
