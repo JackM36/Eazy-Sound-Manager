@@ -228,7 +228,7 @@ namespace Hellmade.Sound
             keys = new List<int>(audioPool.Keys);
             foreach (int key in keys)
             {
-                Audio audio = audioDict[key];
+                Audio audio = audioPool[key];
                 if (!audio.Persist && audio.Activated)
                 {
                     audioPool.Remove(key);
