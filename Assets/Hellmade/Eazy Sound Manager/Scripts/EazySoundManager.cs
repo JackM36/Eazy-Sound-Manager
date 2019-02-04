@@ -403,8 +403,20 @@ namespace Hellmade.Sound
             List<int> keys = usePool ? audioTypeKeys.Concat(poolKeys).ToList() : audioTypeKeys;
             foreach (int key in keys)
             {
-                Audio audio = audioDict[key];
-                if (audio.Clip == audioClip && audio.Type == audioType)
+                Audio audio = null;
+				if (audioDict.ContainsKey(key))
+				{
+					audio = audioDict[key];
+				}
+				else if(audioPool.ContainsKey(key))
+				{
+					audio = audioPool[key];
+				}
+				if (audio == null)
+				{
+					return null;
+				}
+				if (audio.Clip == audioClip && audio.Type == audioType)
                 {
                     return audio;
                 }
