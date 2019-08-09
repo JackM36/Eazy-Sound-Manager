@@ -375,12 +375,7 @@ namespace Hellmade.Sound
         /// </summary>
         private void CreateAudiosource()
         {
-            if(sourceTransform)
-            {
-                sourceTransform = EazySoundManager.Gameobject.transform;
-            }
-
-            AudioSource = sourceTransform.gameObject.AddComponent<AudioSource>() as AudioSource;
+            AudioSource = SourceTransform.gameObject.AddComponent<AudioSource>() as AudioSource;
             AudioSource.clip = Clip;
             AudioSource.loop = Loop;
             AudioSource.mute = Mute;

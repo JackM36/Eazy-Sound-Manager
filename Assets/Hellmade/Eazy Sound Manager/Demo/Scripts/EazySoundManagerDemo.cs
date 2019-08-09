@@ -8,8 +8,10 @@ public class EazySoundManagerDemo : MonoBehaviour
     public Slider globalVolSlider;
     public Slider globalMusicVolSlider;
     public Slider globalSoundVolSlider;
-	
-	void Update ()
+
+    public GameObject test;
+
+    private void Update ()
     {
         // Update UI
         for(int i=0; i < AudioControls.Length; i++)
