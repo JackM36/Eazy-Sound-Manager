@@ -10,18 +10,18 @@
 Moreover, Eazy Sound Manager has the option to make music persist through multiple scenes, as well as add fade in/out transitions. Different global settings for music, game sound effects and UI sound effects are also implemented. However, each audio has its own volume setting which is always relative to its global volume.
 
 ## Features
-- Play multiple audio clips
-- Play music, game sound effects and UI sound effects
-- Play/Stop/Pause/Resume all or individual audio clips
-- Loop music
-- Fade in and fade out transitions
-- Global volume settings
-- Music persistence across scenes
-- 2D & 3D (spatial) audio support
-- Audio pooling
-- Runtime API (Fully documented)
-- No setup needed
-- Full C# source code
+* Play multiple audio clips
+* Play music, game sound effects and UI sound effects
+* Play/Stop/Pause/Resume all or individual audio clips
+* Loop music
+* Fade in and fade out transitions
+* Global volume settings
+* Music persistence across scenes
+* 2D & 3D (spatial) audio support
+* Audio pooling
+* Runtime API (Fully documented)
+* No setup needed
+* Full C# source code
 
 ## Installation
 Download and put the Hellmade folder in your Assets folder, or download and import the [unity package](https://github.com/JackM36/Eazy-Sound-Manager/releases).
