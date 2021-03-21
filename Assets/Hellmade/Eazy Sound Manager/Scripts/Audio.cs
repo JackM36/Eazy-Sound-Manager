@@ -600,7 +600,11 @@ namespace Hellmade.Sound
             }
 
             // Update playing status
+#if UNITY_EDITOR// || MIRROR //Update anyway if we're using networking
+            if (AudioSource.isPlaying != IsPlaying)
+#else
             if (AudioSource.isPlaying != IsPlaying && Application.isFocused)
+#endif
             {
                 IsPlaying = AudioSource.isPlaying;
             }
