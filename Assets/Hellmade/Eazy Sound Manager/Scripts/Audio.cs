@@ -434,7 +434,7 @@ namespace Hellmade.Sound
             }
 
             // Recreate audiosource if it does not exist
-            if (AudioSource == null)
+            if (AudioSource == null || !AudioSource.enabled)
             {
                 CreateAudiosource();
             }
