@@ -285,6 +285,11 @@ namespace Hellmade.Sound
         public bool Persist { get; set; }
 
         /// <summary>
+        /// Whether the audio should be kept in dictionary between scene changes (for later use)
+        /// </summary>
+        public bool Keep { get; }
+
+        /// <summary>
         /// How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)
         /// </summary>
         public float FadeInSeconds { get; set; }
@@ -327,7 +332,8 @@ namespace Hellmade.Sound
         private float onFadeStartVolume;
         private Transform sourceTransform;
 
-        public Audio(AudioType audioType, AudioClip clip, bool loop, bool persist, float volume, float fadeInValue, float fadeOutValue, Transform sourceTransform)
+        public Audio(AudioType audioType, AudioClip clip, bool loop, bool persist, float volume, float fadeInValue,
+            float fadeOutValue, Transform sourceTransform, bool keep)
         {
             // Set unique audio ID
             AudioID = audioCounter;
@@ -339,6 +345,7 @@ namespace Hellmade.Sound
             this.SourceTransform = sourceTransform;
             this.Loop = loop;
             this.Persist = persist;
+            this.Keep = persist || keep;
             this.targetVolume = volume;
             this.initTargetVolume = volume;
             this.tempFadeSeconds = -1;
@@ -390,6 +397,13 @@ namespace Hellmade.Sound
             AudioSource.rolloffMode = RolloffMode;
             AudioSource.maxDistance = Max3DDistance;
             AudioSource.minDistance = Min3DDistance;
+
+            if (Type == AudioType.Music)
+            {
+                AudioSource.bypassEffects = true;
+                AudioSource.bypassListenerEffects = true;
+                AudioSource.bypassReverbZones = true;
+            }
         }
 
         /// <summary>
