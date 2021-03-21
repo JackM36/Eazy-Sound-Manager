@@ -218,11 +218,17 @@ namespace Hellmade.Sound
             foreach (int key in keys)
             {
                 Audio audio = audioDict[key];
-                if (!audio.Persist && audio.Activated)
+                if (!audio.Keep && !audio.Persist && audio.Activated)
                 {
                     Destroy(audio.AudioSource);
                     audioDict.Remove(key);
                 }
+                else if (audio.Keep && !audio.Persist)
+                {
+                    //Audio doesn't persist through scene, but we keep it in the dictionary for later use
+                    audio.Stop();
+                }
+                //else: Keep playing the audio on scene change, also keep it in dictionary
             }
 
             // Go through all audios in the audio pool and remove them if they should not persist through scenes
@@ -230,10 +236,16 @@ namespace Hellmade.Sound
             foreach (int key in keys)
             {
                 Audio audio = audioPool[key];
-                if (!audio.Persist && audio.Activated)
+                if (!audio.Keep && !audio.Persist && audio.Activated)
                 {
                     audioPool.Remove(key);
                 }
+                else if (audio.Keep && !audio.Persist)
+                {
+                    //Audio doesn't persist through scene, but we keep it in the dictionary for later use
+                    audio.Stop();
+                }
+                //else: Keep playing the audio on scene change, also keep it in dictionary
             }
         }
 
@@ -436,7 +448,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareMusic(AudioClip clip)
         {
-            return PrepareAudio(Audio.AudioType.Music, clip, 1f, false, false, 1f, 1f, -1f, null);
+            return PrepareAudio(Audio.AudioType.Music, clip, 1f, false, false, 1f, 1f, null);
         }
 
         /// <summary>
@@ -447,7 +459,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareMusic(AudioClip clip, float volume)
         {
-            return PrepareAudio(Audio.AudioType.Music, clip, volume, false, false, 1f, 1f, -1f, null);
+            return PrepareAudio(Audio.AudioType.Music, clip, volume, false, false, 1f, 1f, null);
         }
 
         /// <summary>
@@ -460,7 +472,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareMusic(AudioClip clip, float volume, bool loop, bool persist)
         {
-            return PrepareAudio(Audio.AudioType.Music, clip, volume, loop, persist, 1f, 1f, -1f, null);
+            return PrepareAudio(Audio.AudioType.Music, clip, volume, loop, persist, 1f, 1f, null);
         }
 
         /// <summary>
@@ -475,7 +487,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds)
         {
-            return PrepareAudio(Audio.AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, -1f, null);
+            return PrepareAudio(Audio.AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, null);
         }
 
         /// <summary>
@@ -492,7 +504,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds, Transform sourceTransform)
         {
-            return PrepareAudio(Audio.AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, currentMusicfadeOutSeconds, sourceTransform);
+            return PrepareAudio(Audio.AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, sourceTransform);
         }
 
         /// <summary>
@@ -502,7 +514,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareSound(AudioClip clip)
         {
-            return PrepareAudio(Audio.AudioType.Sound, clip, 1f, false, false, 0f, 0f, -1f, null);
+            return PrepareAudio(Audio.AudioType.Sound, clip, 1f, false, false, 0f, 0f, null);
         }
 
         /// <summary>
@@ -513,7 +525,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareSound(AudioClip clip, float volume)
         {
-            return PrepareAudio(Audio.AudioType.Sound, clip, volume, false, false, 0f, 0f, -1f, null);
+            return PrepareAudio(Audio.AudioType.Sound, clip, volume, false, false, 0f, 0f, null);
         }
 
         /// <summary>
@@ -524,7 +536,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareSound(AudioClip clip, bool loop)
         {
-            return PrepareAudio(Audio.AudioType.Sound, clip, 1f, loop, false, 0f, 0f, -1f, null);
+            return PrepareAudio(Audio.AudioType.Sound, clip, 1f, loop, false, 0f, 0f, null);
         }
 
         /// <summary>
@@ -537,7 +549,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareSound(AudioClip clip, float volume, bool loop, Transform sourceTransform)
         {
-            return PrepareAudio(Audio.AudioType.Sound, clip, volume, loop, false, 0f, 0f, -1f, sourceTransform);
+            return PrepareAudio(Audio.AudioType.Sound, clip, volume, loop, false, 0f, 0f, sourceTransform);
         }
 
         /// <summary>
@@ -547,7 +559,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareUISound(AudioClip clip)
         {
-            return PrepareAudio(Audio.AudioType.UISound, clip, 1f, false, false, 0f, 0f, -1f, null);
+            return PrepareAudio(Audio.AudioType.UISound, clip, 1f, false, false, 0f, 0f, null);
         }
 
         /// <summary>
@@ -558,10 +570,22 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PrepareUISound(AudioClip clip, float volume)
         {
-            return PrepareAudio(Audio.AudioType.UISound, clip, volume, false, false, 0f, 0f, -1f, null);
+            return PrepareAudio(Audio.AudioType.UISound, clip, volume, false, false, 0f, 0f, null);
         }
 
-        private static int PrepareAudio(Audio.AudioType audioType, AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds, Transform sourceTransform)
+        /// <summary>
+        /// Prepares and initializes an audioType of choice
+        /// </summary>
+        /// <param name="properties">All audio properties (loop, persist, clip, etc)</param>
+        /// <returns>The ID of the created Audio object</returns>
+        public static int PrepareAudio(AudioProperties properties)
+        {
+            return PrepareAudio(properties.audioType, properties.clip, properties.volume, properties.loop, properties.persist
+                , properties.fadeInSeconds, properties.fadeOutSeconds, properties.sourceTransform, properties.keep);
+        }
+
+        private static int PrepareAudio(Audio.AudioType audioType, AudioClip clip, float volume, bool loop, bool persist,
+            float fadeInSeconds, float fadeOutSeconds, Transform sourceTransform, bool keep = false)
         {
             if (clip == null)
             {
@@ -581,7 +605,7 @@ namespace Hellmade.Sound
             }
 
             // Create the audioSource
-            Audio audio = new Audio(audioType, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds, sourceTransform);
+            Audio audio = new Audio(audioType, clip, loop, persist, volume, fadeInSeconds, fadeOutSeconds, sourceTransform, keep);
 
             // Add it to dictionary
             audioDict.Add(audio.AudioID, audio);
@@ -727,7 +751,7 @@ namespace Hellmade.Sound
 
         private static int PlayAudio(Audio.AudioType audioType, AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds, Transform sourceTransform)
         {
-            int audioID = PrepareAudio(audioType, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, currentMusicfadeOutSeconds, sourceTransform);
+            int audioID = PrepareAudio(audioType, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, sourceTransform);
 
             // Stop all current music playing
             if (audioType == Audio.AudioType.Music)
@@ -913,5 +937,45 @@ namespace Hellmade.Sound
         }
 
         #endregion
+    }
+
+    public class AudioProperties
+    {
+        public Audio.AudioType audioType;
+        public AudioClip clip;
+        public float volume;
+        public bool loop;
+        public bool persist;
+        public float fadeInSeconds;
+        public float fadeOutSeconds;
+        public Transform sourceTransform;
+        public bool keep;
+
+        public AudioProperties()
+        {
+            this.volume = 1f;
+            switch (audioType)
+            {
+                case Audio.AudioType.Music:
+                    this.fadeInSeconds = 1f;
+                    this.fadeOutSeconds = 1f;
+                    break;
+            }
+        }
+
+        public AudioProperties(Audio.AudioType audioType, AudioClip clip, float volume = 1f, bool loop = false, bool persist = false,
+            bool keep = false, float fadeInSeconds= 0f, float fadeOutSeconds = 0f, Transform sourceTransform = null)
+        {
+            this.audioType = audioType;
+            this.clip = clip;
+            this.volume = volume;
+            this.loop = loop;
+            this.persist = persist;
+            this.keep = keep;
+            this.fadeInSeconds = fadeInSeconds;
+            this.fadeOutSeconds = fadeOutSeconds;
+            this.sourceTransform = sourceTransform;
+        }
+
     }
 }
