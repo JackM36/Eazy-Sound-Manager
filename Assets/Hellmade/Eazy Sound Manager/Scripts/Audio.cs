@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Hellmade.Sound
 {
@@ -521,6 +522,15 @@ namespace Hellmade.Sound
         {
             Min3DDistance = min;
             Max3DDistance = max;
+        }
+        
+        /// <summary>
+        /// Sets the audio output to be played through a mixer output group
+        /// </summary>
+        /// <param name="audioMixerGroup">the audio mixer group</param>
+        public void SetOutputAudioMixerGroup(AudioMixerGroup audioMixerGroup)
+        {
+            AudioSource.outputAudioMixerGroup = audioMixerGroup;
         }
 
         /// <summary>

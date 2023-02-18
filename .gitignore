@@ -1,0 +1,8 @@
+Library/
+Logs/
+.idea/
+obj/
+Packages/
+ProjectSettings/
+Temp/
+UserSettings/
